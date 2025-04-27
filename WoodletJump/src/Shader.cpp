@@ -1,7 +1,7 @@
 #include <fstream>
 #include <filesystem>
 #include <Shader.h>
-#include <GL/gl.h>
+#include <SFML/OpenGL.hpp>
 
 Shader::FileNotFoundError::FileNotFoundError(std::string&& filename) : filename_(filename) { }
 
