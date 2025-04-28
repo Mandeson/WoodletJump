@@ -9,5 +9,5 @@ public:
     void run();
 private:
     sf::Window window_;
-    std::unique_ptr<WoodletJump> game;
+    std::unique_ptr<WoodletJump> game_;
 };

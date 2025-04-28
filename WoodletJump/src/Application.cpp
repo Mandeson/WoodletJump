@@ -7,7 +7,7 @@ void Application::run() {
     window_.setVerticalSyncEnabled(true);
 
     try {
-        game = std::make_unique<WoodletJump>();
+        game_ = std::make_unique<WoodletJump>();
     } catch (WoodletJump::InitError &e) {
         std::cerr << e.what() << std::endl;
         window_.close();
@@ -19,14 +19,13 @@ void Application::run() {
         while (const std::optional event = window_.pollEvent())
         {
             if (event->is<sf::Event::Closed>()) {
-                game.reset();
                 window_.close();
             }
             else if (const auto* resized = event->getIf<sf::Event::Resized>())
                 glViewport(0, 0, resized->size.x, resized->size.y);
         }
 
-        game->render();
+        game_->render();
 
         window_.display();
     }
