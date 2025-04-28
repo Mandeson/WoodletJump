@@ -43,19 +43,26 @@ const std::string& Shader::LinkError::getLinkError() {
     return link_error_;
 }
 
-Shader::~Shader() {
+Shader::Shader() { }
+
+Shader::~Shader()
+{
     if (id_)
         glDeleteProgram(id_);
 }
 
 static inline std::string _load_file(std::string& filename) {
-    auto size = std::filesystem::file_size(filename);
-    std::string text(size, '\0');
-    std::ifstream in(filename);
-    if (in.fail())
+    try {
+        auto size = std::filesystem::file_size(filename);
+        std::string text(size, '\0');
+        std::ifstream in(filename);
+        if (in.fail())
+            throw Shader::FileNotFoundError(std::move(filename));
+        in.read(&text[0], size);
+        return text;
+    } catch (std::filesystem::filesystem_error& e) {
         throw Shader::FileNotFoundError(std::move(filename));
-    in.read(&text[0], size);
-    return text;
+    }
 }
 
 static GLuint _compile(std::string&& filename, GLenum type)

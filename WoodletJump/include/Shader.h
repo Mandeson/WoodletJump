@@ -37,6 +37,7 @@ public:
         std::string link_error_;
     };
 
+    Shader();
     Shader(const Shader&) = delete; // non-copyable
     Shader& operator=(const Shader&) = delete;
     ~Shader();
