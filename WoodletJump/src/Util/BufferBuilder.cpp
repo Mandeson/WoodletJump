@@ -34,18 +34,22 @@ void BufferBuilder::upload(GLenum usage) {
     if (uploaded_)
         return;
     glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-	glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(float), &vertices_[0], usage);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), &indices_[0], usage);
+    glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(float), &vertices_[0], usage);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), &indices_[0], usage);
     uploaded_ = true;
 }
 
 void BufferBuilder::bind(GLuint aPosLocation) {
     upload(); // ensure the data has been uploaded
     glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-	glVertexAttribPointer(aPosLocation, 2, GL_FLOAT, GL_FALSE, /*4*/2 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(aPosLocation);
+    glVertexAttribPointer(aPosLocation, 2, GL_FLOAT, GL_FALSE, /*4*/2 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(aPosLocation);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-	/*glVertexAttribPointer(torchRenderer->aTexCoordLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-	glEnableVertexAttribArray(torchRenderer->aTexCoordLocation);*/
+    /*glVertexAttribPointer(torchRenderer->aTexCoordLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(torchRenderer->aTexCoordLocation);*/
+}
+
+int BufferBuilder::getElementCount() {
+    return indices_.size();
 }

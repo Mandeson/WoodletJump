@@ -15,6 +15,7 @@ public:
      * args: location of position attribute within a ahader
      */
     void bind(GLuint aPosLocation);
+    int getElementCount();
 private:
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
