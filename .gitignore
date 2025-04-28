@@ -1,5 +1,5 @@
 WoodletJump/bin/WoodletJump
 WoodletJump/bin/liblibrary.so
-WoodletJump/build/*.o
+WoodletJump/build/*
 Library/bin/liblibrary.so
-Library/build/*.o
+Library/build/*
