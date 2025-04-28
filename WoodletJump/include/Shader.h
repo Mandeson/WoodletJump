@@ -46,6 +46,8 @@ public:
      * Must be called from the opengl context thread
      */
     void load(const char *filename);
+    void use();
+    GLuint getAttribLocation(const char* name);
 private:
     GLuint id_{};
 };

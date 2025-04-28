@@ -110,3 +110,11 @@ void Shader::load(const char *name) {
         throw Shader::LinkError(std::string(name), std::move(error_msg));
     }
 }
+
+void Shader::use() {
+    glUseProgram(id_);
+}
+
+GLuint Shader::getAttribLocation(const char* name) {
+    return glGetAttribLocation(id_, name);
+}
