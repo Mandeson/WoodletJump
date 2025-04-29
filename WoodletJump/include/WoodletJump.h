@@ -2,6 +2,7 @@
 
 #include <exception>
 #include <Shader.h>
+#include <glm/glm.hpp>
 #include <Util/Vector.h>
 #include <Util/BufferBuilder.h>
 #include <SFML/Graphics/Texture.hpp>
@@ -26,4 +27,6 @@ private:
     BufferBuilder buffer_builder_;
     GLuint aPosLocation_;
     GLuint aTexCoordLocation_;
+    GLuint uTransformLocation_;
+    glm::mat4 projection_;
 };
