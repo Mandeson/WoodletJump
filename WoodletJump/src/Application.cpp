@@ -19,7 +19,9 @@ void Application::run() {
         while (const std::optional event = window_.pollEvent())
         {
             if (event->is<sf::Event::Closed>()) {
+                game_.reset();
                 window_.close();
+                return;
             }
             else if (const auto* resized = event->getIf<sf::Event::Resized>())
                 glViewport(0, 0, resized->size.x, resized->size.y);
