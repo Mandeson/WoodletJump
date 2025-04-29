@@ -48,6 +48,8 @@ public:
     void load(const char *filename);
     void use();
     GLuint getAttribLocation(const char* name);
+    // Bind the default OpenGL shader
+    static void reset();
 private:
     GLuint id_{};
 };

@@ -118,3 +118,7 @@ void Shader::use() {
 GLuint Shader::getAttribLocation(const char* name) {
     return glGetAttribLocation(id_, name);
 }
+
+void Shader::reset() {
+    glUseProgram(0);
+}
