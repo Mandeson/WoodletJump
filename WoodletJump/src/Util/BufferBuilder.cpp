@@ -1,5 +1,6 @@
 #include <array>
 #include <Util/BufferBuilder.h>
+#include <Util/TextureRect.h>
 
 BufferBuilder::BufferBuilder() : vertices_{}, indices_{} {
     glGenBuffers(1, &VBO_);
@@ -13,13 +14,13 @@ BufferBuilder::~BufferBuilder() {
 
 void BufferBuilder::addRectangle(Vector2f pos, Vector2f size) {
     uploaded_ = false;
-    std::array<float, 2*4> vertices = {
-        pos.x,          pos.y,
-        pos.x + size.x, pos.y,
-        pos.x + size.x, pos.y + size.y,
-        pos.x,          pos.y + size.y,
+    std::array<float, (2 + 2) * 4> vertices = {
+        pos.x,          pos.y,          0.0f, 0.0f,
+        pos.x + size.x, pos.y,          1.0f, 0.0f,
+        pos.x + size.x, pos.y + size.y, 1.0f, 1.0f,
+        pos.x,          pos.y + size.y, 0.0f, 1.0f
     };
-    std::array<unsigned int, 3*2> indices = {
+    std::array<unsigned int, 3 * 2> indices = {
         indice_index_, indice_index_ + 1, indice_index_ + 2,
         indice_index_ + 2, indice_index_ + 3, indice_index_
     };
@@ -40,14 +41,16 @@ void BufferBuilder::upload(GLenum usage) {
     uploaded_ = true;
 }
 
-void BufferBuilder::bind(GLuint aPosLocation) {
+void BufferBuilder::bind(GLuint aPosLocation, GLuint aTexCoordLocation) {
     upload(); // ensure the data has been uploaded
     glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-    glVertexAttribPointer(aPosLocation, 2, GL_FLOAT, GL_FALSE, /*4*/2 * sizeof(float), (void*)0);
+    glVertexAttribPointer(aPosLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
+            reinterpret_cast<void *>(0));
     glEnableVertexAttribArray(aPosLocation);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-    /*glVertexAttribPointer(torchRenderer->aTexCoordLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    glEnableVertexAttribArray(torchRenderer->aTexCoordLocation);*/
+    glVertexAttribPointer(aTexCoordLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
+            reinterpret_cast<void *>(2 * sizeof(float)));
+    glEnableVertexAttribArray(aTexCoordLocation);
 }
 
 int BufferBuilder::getElementCount() {

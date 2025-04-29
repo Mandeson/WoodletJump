@@ -14,7 +14,7 @@ public:
     /* Binds buffer objects and enables their attributes
      * args: location of position attribute within a ahader
      */
-    void bind(GLuint aPosLocation);
+    void bind(GLuint aPosLocation, GLuint aTexCoordLocation);
     int getElementCount();
 private:
     std::vector<float> vertices_;
