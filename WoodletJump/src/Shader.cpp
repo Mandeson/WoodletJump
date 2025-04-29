@@ -119,6 +119,14 @@ GLuint Shader::getAttribLocation(const char* name) {
     return glGetAttribLocation(id_, name);
 }
 
+GLuint Shader::getUniformLocation(const char *name) {
+    return glGetUniformLocation(id_, name);
+}
+
+void Shader::setUniformMat4(GLuint uniform_location, glm::mat4 matrix) {
+    glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
 void Shader::reset() {
     glUseProgram(0);
 }
