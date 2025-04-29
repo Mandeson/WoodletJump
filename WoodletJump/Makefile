@@ -1,7 +1,7 @@
 CXX = g++
 CFLAGS = -Wall -DGL_GLEXT_PROTOTYPES -I"./include" -g3
 LIBRARIES = -lsfml-graphics -lsfml-window -lsfml-system -lGL -llibrary
-OBJECTS = build/main.o build/WoodletJump.o build/Shader.o build/Application.o build/Util/BufferBuilder.o
+OBJECTS = build/main.o build/WoodletJump.o build/Shader.o build/Application.o build/Util/BufferBuilder.o build/Util/TextureRect.o
 
 all: bin/WoodletJump
 bin/WoodletJump: $(OBJECTS)
@@ -16,5 +16,7 @@ build/Application.o: src/Application.cpp include/Application.h
 	$(CXX) $(CFLAGS) -c -o build/Application.o src/Application.cpp
 build/Util/BufferBuilder.o: src/Util/BufferBuilder.cpp include/Util/BufferBuilder.h
 	$(CXX) $(CFLAGS) -c -o build/Util/BufferBuilder.o src/Util/BufferBuilder.cpp
+build/Util/TextureRect.o: src/Util/TextureRect.cpp include/Util/TextureRect.h
+	$(CXX) $(CFLAGS) -c -o build/Util/TextureRect.o src/Util/TextureRect.cpp
 clean:
 	rm build/*.o
