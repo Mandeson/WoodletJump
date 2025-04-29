@@ -3,12 +3,13 @@
 #include <vector>
 #include <SFML/OpenGL.hpp>
 #include <Util/Vector.h>
+#include <Util/TextureRect.h>
 
 class BufferBuilder {
 public:
     BufferBuilder();
     ~BufferBuilder();
-    void addRectangle(Vector2f pos, Vector2f size);
+    void addRectangle(Vector2f pos, Vector2f size, const TextureRect& texture_rect);
     void upload(GLenum usage=GL_STATIC_DRAW);
 
     /* Binds buffer objects and enables their attributes

@@ -12,13 +12,13 @@ BufferBuilder::~BufferBuilder() {
     glDeleteBuffers(1, &EBO_);
 }
 
-void BufferBuilder::addRectangle(Vector2f pos, Vector2f size) {
+void BufferBuilder::addRectangle(Vector2f pos, Vector2f size, const TextureRect& texture_rect) {
     uploaded_ = false;
     std::array<float, (2 + 2) * 4> vertices = {
-        pos.x,          pos.y,          0.0f, 0.0f,
-        pos.x + size.x, pos.y,          1.0f, 0.0f,
-        pos.x + size.x, pos.y + size.y, 1.0f, 1.0f,
-        pos.x,          pos.y + size.y, 0.0f, 1.0f
+        pos.x,          pos.y,          texture_rect.s1, texture_rect.t1,
+        pos.x + size.x, pos.y,          texture_rect.s2, texture_rect.t1,
+        pos.x + size.x, pos.y + size.y, texture_rect.s2, texture_rect.t2,
+        pos.x,          pos.y + size.y, texture_rect.s1, texture_rect.t2
     };
     std::array<unsigned int, 3 * 2> indices = {
         indice_index_, indice_index_ + 1, indice_index_ + 2,
