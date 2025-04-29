@@ -2,8 +2,10 @@
 #include <Application.h>
 #include <SFML/OpenGL.hpp>
 
+constexpr sf::Vector2u kInitialWindowSize = {800, 600};
+
 void Application::run() {
-    window_.create(sf::VideoMode({800, 600}), "WoodletJump");
+    window_.create(sf::VideoMode(kInitialWindowSize), "WoodletJump");
     window_.setVerticalSyncEnabled(true);
 
     try {
@@ -14,6 +16,9 @@ void Application::run() {
         return;
     }
 
+    game_->windowSize({static_cast<int>(kInitialWindowSize.x),
+            static_cast<int>(kInitialWindowSize.y)});
+
     while (window_.isOpen())
     {
         while (const std::optional event = window_.pollEvent())
@@ -23,8 +28,11 @@ void Application::run() {
                 window_.close();
                 return;
             }
-            else if (const auto* resized = event->getIf<sf::Event::Resized>())
-                glViewport(0, 0, resized->size.x, resized->size.y);
+            else if (const auto* resized = event->getIf<sf::Event::Resized>()) {
+                auto [x, y] = resized->size;
+                glViewport(0, 0, x, y);
+                game_->windowSize({static_cast<int>(x), static_cast<int>(y)});
+            }
         }
 
         game_->render();
