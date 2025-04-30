@@ -43,6 +43,10 @@ const std::string& Shader::LinkError::getLinkError() {
     return link_error_;
 }
 
+const char* Shader::NotLoaded::what() const noexcept {
+    return "Error: Using a shader that is not loaded";
+}
+
 Shader::Shader() { }
 
 Shader::~Shader()
@@ -112,18 +116,26 @@ void Shader::load(const char *name) {
 }
 
 void Shader::use() {
+    if (id_ == 0)
+        throw Shader::NotLoaded();
     glUseProgram(id_);
 }
 
 GLuint Shader::getAttribLocation(const char* name) {
+    if (id_ == 0)
+        throw Shader::NotLoaded();
     return glGetAttribLocation(id_, name);
 }
 
 GLuint Shader::getUniformLocation(const char *name) {
+    if (id_ == 0)
+        throw Shader::NotLoaded();
     return glGetUniformLocation(id_, name);
 }
 
 void Shader::setUniformMat4(GLuint uniform_location, glm::mat4 matrix) {
+    if (id_ == 0)
+        throw Shader::NotLoaded();
     glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 

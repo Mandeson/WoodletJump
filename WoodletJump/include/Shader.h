@@ -39,6 +39,11 @@ public:
         std::string link_error_;
     };
 
+    class NotLoaded : std::exception {
+    public:
+        const char* what() const noexcept override;
+    };
+
     Shader();
     Shader(const Shader&) = delete; // non-copyable
     Shader& operator=(const Shader&) = delete;
