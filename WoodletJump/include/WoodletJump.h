@@ -6,6 +6,7 @@
 #include <Util/Vector.h>
 #include <Util/BufferBuilder.h>
 #include <SFML/Graphics/Texture.hpp>
+#include <Sprite.h>
 
 class WoodletJump {
 public:
@@ -22,11 +23,7 @@ public:
     void windowSize(Vector2i size);
     void render();
 private:
+    Renderer::SpriteRenderer sprite_renderer_;
     sf::Texture texture_;
-    Shader shader_;
-    BufferBuilder buffer_builder_;
-    GLuint aPosLocation_;
-    GLuint aTexCoordLocation_;
-    GLuint uTransformLocation_;
-    glm::mat4 projection_;
+    Sprite sprite_;
 };

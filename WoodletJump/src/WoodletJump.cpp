@@ -8,8 +8,9 @@ WoodletJump::WoodletJump() {
     if (!texture_.loadFromFile(filename))
         throw WoodletJump::InitError();
     texture_.setSmooth(true);
+    static_cast<void>(texture_.generateMipmap());
     try {
-        shader_.load("sprite");
+        sprite_renderer_.init();
     } catch (Shader::FileNotFoundError& e) {
         std::cerr << e.what() << ": " << e.getFilename()
                 << std::endl;
@@ -23,16 +24,14 @@ WoodletJump::WoodletJump() {
                 << '\'' << std::endl << e.getLinkError();
         throw WoodletJump::InitError();
     }
-    aPosLocation_ = shader_.getAttribLocation("aPos");
-    aTexCoordLocation_ = shader_.getAttribLocation("aTexCoord");
-    uTransformLocation_ = shader_.getUniformLocation("uTransform");
-    buffer_builder_.addRectangle({-0.5f, -0.5f}, {1.0f, 1.0f}, TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
-    buffer_builder_.upload();
+    sprite_.init(TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void WoodletJump::windowSize(Vector2i size) {
-    projection_ = glm::ortho(0.0f, static_cast<float>(size.x), static_cast<float>(size.y), 0.0f);
+    sprite_.setSize({static_cast<float>(size.y / 10), static_cast<float>(size.y / 10)});
+    sprite_.setPosition({static_cast<float>(size.x / 2), static_cast<float>(size.y / 2)});
+    sprite_renderer_.windowSize(size);
 }
 
 void WoodletJump::render()
@@ -40,14 +39,8 @@ void WoodletJump::render()
     glClear(GL_COLOR_BUFFER_BIT);
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    buffer_builder_.bind(aPosLocation_, aTexCoordLocation_);
-    shader_.use();
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(128.0f, 128.0f, 1.0f));
-    model = glm::rotate(model, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-    model = glm::scale(model, glm::vec3(80.0f, 80.0f, 1.0f));
-    shader_.setUniformMat4(uTransformLocation_, projection_ * model);
-    sf::Texture::bind(&texture_);
-    glDrawElements(GL_TRIANGLES, buffer_builder_.getElementCount(), GL_UNSIGNED_INT, 0);
-    Shader::reset();
+
+    sprite_renderer_.render(sprite_, texture_);
+    
     glDisable(GL_BLEND);
 }
