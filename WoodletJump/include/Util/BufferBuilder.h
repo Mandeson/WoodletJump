@@ -10,6 +10,7 @@ public:
     BufferBuilder();
     ~BufferBuilder();
     void addRectangle(Vector2f pos, Vector2f size, const TextureRect& texture_rect);
+    void clear();
     void upload(GLenum usage=GL_STATIC_DRAW);
 
     /* Binds buffer objects and enables their attributes

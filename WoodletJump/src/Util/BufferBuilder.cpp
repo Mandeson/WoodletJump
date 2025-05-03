@@ -31,6 +31,12 @@ void BufferBuilder::addRectangle(Vector2f pos, Vector2f size, const TextureRect&
         indices_.push_back(indice);
 }
 
+void BufferBuilder::clear() {
+    indice_index_ = 0;
+    vertices_.clear();
+    indices_.clear();
+}
+
 void BufferBuilder::upload(GLenum usage) {
     if (uploaded_)
         return;
