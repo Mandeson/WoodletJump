@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics/Texture.hpp>
 #include <Shader.h>
 #include <Util/Vector.h>
 
@@ -12,7 +11,7 @@ class SpriteRenderer {
 public:
     void init();
     void windowSize(Vector2i size);
-    void render(Sprite& sprite, const sf::Texture& texture);
+    void render(Sprite& sprite);
 private:
     Shader shader_;
     GLuint aPosLocation_;

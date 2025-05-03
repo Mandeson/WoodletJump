@@ -40,7 +40,8 @@ void WoodletJump::render()
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
-    sprite_renderer_.render(sprite_, texture_);
+    sf::Texture::bind(&texture_);
+    sprite_renderer_.render(sprite_);
     
     glDisable(GL_BLEND);
 }

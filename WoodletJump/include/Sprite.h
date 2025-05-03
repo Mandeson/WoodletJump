@@ -15,5 +15,5 @@ private:
     Vector2f size_{};
     float rotation_{};
 
-    friend void Renderer::SpriteRenderer::render(Sprite& sprite, const sf::Texture& texture);
+    friend void Renderer::SpriteRenderer::render(Sprite& sprite);
 };

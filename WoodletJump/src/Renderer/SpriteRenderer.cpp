@@ -14,14 +14,14 @@ void SpriteRenderer::windowSize(Vector2i size) {
     projection_ = glm::ortho(0.0f, static_cast<float>(size.x), static_cast<float>(size.y), 0.0f);
 }
 
-void SpriteRenderer::render(Sprite& sprite, const sf::Texture& texture) {
+/* Renders the sprite. Uses currently bound texture atlas. */
+void SpriteRenderer::render(Sprite& sprite) {
     sprite.buffer_builder_.bind(aPosLocation_, aTexCoordLocation_);
     shader_.use();
     glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(sprite.position_.x, sprite.position_.y, 0.0f));
     model = glm::rotate(model, sprite.rotation_, glm::vec3(0.0f, 0.0f, 1.0f));
     model = glm::scale(model, glm::vec3(sprite.size_.x, sprite.size_.y, 1.0f));
     shader_.setUniformMat4(uTransformLocation_, projection_ * model);
-    sf::Texture::bind(&texture);
     glDrawElements(GL_TRIANGLES, sprite.buffer_builder_.getElementCount(), GL_UNSIGNED_INT, 0);
     Shader::reset();
 }
