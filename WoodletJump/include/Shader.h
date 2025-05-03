@@ -5,6 +5,7 @@
 #include <SFML/OpenGL.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <Util/Vector.h>
 
 class Shader {
 public:
@@ -57,6 +58,7 @@ public:
     GLuint getAttribLocation(const char* name);
     GLuint getUniformLocation(const char* name);
     void setUniformMat4(GLuint uniform_location, glm::mat4 matrix);
+    void setUniform2f(GLuint uniform_location, Vector2f vec);;
     // Bind the default OpenGL shader
     static void reset();
 private:
