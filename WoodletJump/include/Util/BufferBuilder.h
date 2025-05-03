@@ -13,7 +13,7 @@ public:
     void upload(GLenum usage=GL_STATIC_DRAW);
 
     /* Binds buffer objects and enables their attributes
-     * args: location of position attribute within a ahader
+     * args: location of position and texture coordinate attributes within a ahader
      */
     void bind(GLuint aPosLocation, GLuint aTexCoordLocation);
     int getElementCount();
