@@ -7,6 +7,7 @@
 #include <Util/BufferBuilder.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <Sprite.h>
+#include <Renderer/SceneRenderer.h>
 
 class WoodletJump {
 public:
@@ -24,6 +25,7 @@ public:
     void render();
 private:
     Renderer::SpriteRenderer sprite_renderer_;
+    Renderer::SceneRenderer scene_renderer_;
     sf::Texture texture_;
     Sprite sprite_;
 };

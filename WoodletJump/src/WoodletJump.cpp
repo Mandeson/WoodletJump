@@ -11,6 +11,7 @@ WoodletJump::WoodletJump() {
     static_cast<void>(texture_.generateMipmap());
     try {
         sprite_renderer_.init();
+        scene_renderer_.init();
     } catch (Shader::FileNotFoundError& e) {
         std::cerr << e.what() << ": " << e.getFilename()
                 << std::endl;
@@ -32,6 +33,7 @@ void WoodletJump::windowSize(Vector2i size) {
     sprite_.setSize({static_cast<float>(size.y / 10), static_cast<float>(size.y / 10)});
     sprite_.setPosition({static_cast<float>(size.x / 2), static_cast<float>(size.y / 2)});
     sprite_renderer_.windowSize(size);
+    scene_renderer_.windowSize(size);
 }
 
 void WoodletJump::render()
@@ -42,6 +44,9 @@ void WoodletJump::render()
 
     sf::Texture::bind(&texture_);
     sprite_renderer_.render(sprite_);
+    scene_renderer_.getBufferBuilder().clear();
+    scene_renderer_.getBufferBuilder().addRectangle({100, 100}, {80, 80}, TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
+    scene_renderer_.render();
     
     glDisable(GL_BLEND);
 }
