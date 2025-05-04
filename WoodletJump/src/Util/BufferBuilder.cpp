@@ -40,10 +40,25 @@ void BufferBuilder::clear() {
 void BufferBuilder::upload(GLenum usage) {
     if (uploaded_)
         return;
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO_);
-    glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(float), &vertices_[0], usage);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int), &indices_[0], usage);
+
+    int size = indices_.size();
+    if (size != 0) {
+        if (size > allocated_size_) {
+            glBufferData(GL_ARRAY_BUFFER, vertices_.size() * sizeof(float),
+                    reinterpret_cast<void *>(&vertices_[0]), usage);
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices_.size() * sizeof(unsigned int),
+                    reinterpret_cast<void *>(&indices_[0]), usage);
+            allocated_size_ = size;
+        } else {
+            glBufferSubData(GL_ARRAY_BUFFER, 0, vertices_.size() * sizeof(float),
+                    reinterpret_cast<void *>(&vertices_[0]));
+            glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, indices_.size() * sizeof(unsigned int),
+                    reinterpret_cast<void *>(&indices_[0]));
+        }
+    }
     uploaded_ = true;
 }
 

@@ -22,6 +22,7 @@ private:
     std::vector<float> vertices_;
     std::vector<unsigned int> indices_;
     unsigned int indice_index_{};
+    int allocated_size_{};
     GLuint VBO_;
     GLuint EBO_;
     bool uploaded_{};
