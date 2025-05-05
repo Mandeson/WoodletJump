@@ -1,6 +1,7 @@
 #include <array>
 #include <Util/BufferBuilder.h>
 #include <Util/TextureRect.h>
+#include <Logger.h>
 
 BufferBuilder::BufferBuilder() : vertices_{}, indices_{} {
     glGenBuffers(1, &VBO_);
@@ -63,7 +64,11 @@ void BufferBuilder::upload(GLenum usage) {
 }
 
 void BufferBuilder::bind(GLuint aPosLocation, GLuint aTexCoordLocation) {
-    upload(); // ensure the data has been uploaded
+    if (!uploaded_) {
+        Logger::log(Logger::MessageType::kWarning, "BufferBuilder: trying to bind a"
+            " buffer that is not yet uploaded. Uploading with GL_DYNAMIC_DRAW...");
+        upload(GL_DYNAMIC_DRAW); // ensure the data has been uploaded
+    }
     glBindBuffer(GL_ARRAY_BUFFER, VBO_);
     glVertexAttribPointer(aPosLocation, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
             reinterpret_cast<void *>(0));
