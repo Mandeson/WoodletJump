@@ -9,7 +9,7 @@
 
 class Shader {
 public:
-    class FileNotFoundError : std::exception {
+    class FileNotFoundError : public std::exception {
     public:
         FileNotFoundError(std::string&& filename);
         const char* what() const noexcept override;
@@ -18,7 +18,7 @@ public:
         std::string filename_;
     };
 
-    class CompileError : std::exception {
+    class CompileError : public std::exception {
     public:
         CompileError(std::string&& filename, std::string&& compile_error);
         const char* what() const noexcept override;
@@ -29,7 +29,7 @@ public:
         std::string compile_error_;
     };
 
-    class LinkError : std::exception {
+    class LinkError : public std::exception {
     public:
         LinkError(std::string&& name, std::string&& link_error);
         const char* what() const noexcept override;
@@ -40,7 +40,7 @@ public:
         std::string link_error_;
     };
 
-    class NotLoaded : std::exception {
+    class NotLoaded : public std::exception {
     public:
         const char* what() const noexcept override;
     };

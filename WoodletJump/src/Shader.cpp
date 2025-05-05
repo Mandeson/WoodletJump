@@ -44,7 +44,7 @@ const std::string& Shader::LinkError::getLinkError() {
 }
 
 const char* Shader::NotLoaded::what() const noexcept {
-    return "Error: Using a shader that is not loaded";
+    return "Shader: using a shader that is not loaded";
 }
 
 Shader::Shader() { }

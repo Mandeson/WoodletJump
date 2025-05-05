@@ -2,6 +2,7 @@
 #include <SFML/OpenGL.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <WoodletJump.h>
+#include <Logger.h>
 
 WoodletJump::WoodletJump() {
     const char *filename = "textures/atlas.png";
@@ -13,16 +14,15 @@ WoodletJump::WoodletJump() {
         sprite_renderer_.init();
         scene_renderer_.init();
     } catch (Shader::FileNotFoundError& e) {
-        std::cerr << e.what() << ": " << e.getFilename()
-                << std::endl;
+        Logger::log(Logger::MessageType::kError, std::string(e.what()) + ": " + e.getFilename());
         throw WoodletJump::InitError();
     } catch (Shader::CompileError& e) {
-        std::cerr << e.what() << ": " << e.getFilename()
-                << std::endl << e.getCompileError();
+        Logger::log(Logger::MessageType::kError, std::string(e.what()) + ": " + e.getFilename()
+                + '\n' + e.getCompileError());
         throw WoodletJump::InitError();
     } catch (Shader::LinkError &e) {
-        std::cerr << e.what() << ": '" << e.getName()
-                << '\'' << std::endl << e.getLinkError();
+        Logger::log(Logger::MessageType::kError, std::string(e.what()) + ": " + e.getName()
+                + '\n' + e.getLinkError());
         throw WoodletJump::InitError();
     }
     sprite_.init(TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
