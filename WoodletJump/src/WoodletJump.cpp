@@ -4,9 +4,8 @@
 #include <WoodletJump.h>
 #include <Logger.h>
 
-WoodletJump::WoodletJump() {
-    const char *filename = "textures/atlas.png";
-    if (!texture_.loadFromFile(filename))
+WoodletJump::WoodletJump() : player_(), world_() {
+    if (!texture_.loadFromFile("textures/atlas.png"))
         throw WoodletJump::InitError();
     texture_.setSmooth(true);
     static_cast<void>(texture_.generateMipmap());
@@ -25,13 +24,14 @@ WoodletJump::WoodletJump() {
                 + '\n' + e.getLinkError());
         throw WoodletJump::InitError();
     }
-    sprite_.init(TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
+
+    player_.init();
+    
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 void WoodletJump::windowSize(Vector2i size) {
-    sprite_.setSize({static_cast<float>(size.y / 10), static_cast<float>(size.y / 10)});
-    sprite_.setPosition({static_cast<float>(size.x / 2), static_cast<float>(size.y / 2)});
+    window_size_ = size;
     sprite_renderer_.windowSize(size);
     scene_renderer_.windowSize(size);
 }
@@ -43,10 +43,13 @@ void WoodletJump::render()
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
     sf::Texture::bind(&texture_);
-    sprite_renderer_.render(sprite_);
-    scene_renderer_.getBufferBuilder().clear();
-    scene_renderer_.getBufferBuilder().addRectangle({100, 100}, {80, 80}, TextureRect(texture_.getSize().x, {0, 0}, {80, 80}));
+
+    auto &scene_buffer_builder = scene_renderer_.getBufferBuilder();
+    scene_buffer_builder.clear();
+    world_.buildMesh(scene_buffer_builder, window_size_);
     scene_renderer_.render();
+
+    player_.render(sprite_renderer_, window_size_);
     
     glDisable(GL_BLEND);
 }
