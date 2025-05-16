@@ -10,6 +10,7 @@
 #include <Renderer/SceneRenderer.h>
 #include <World/World.h>
 #include <Player.h>
+#include <Camera.h>
 
 class WoodletJump {
 public:
@@ -32,4 +33,5 @@ private:
     Renderer::SceneRenderer scene_renderer_;
     Player player_;
     World::World world_;
+    Camera camera_;
 };
