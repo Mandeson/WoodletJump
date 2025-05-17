@@ -2,14 +2,8 @@
 #include <Texture.h>
 #include <Logger.h>
 
-Texture::FileNotFoundError::FileNotFoundError(std::string &&filename) : filename_(filename) {}
-
-const char *Texture::FileNotFoundError::what() const noexcept {
-    return "Texture: file not found";
-}
-
-const std::string &Texture::FileNotFoundError::getFilename() {
-    return filename_;
+const char *Texture::LoadingError::what() const noexcept {
+    return "Texture: loading error";
 }
 
 const char* Texture::NotLoaded::what() const noexcept {
@@ -19,8 +13,8 @@ const char* Texture::NotLoaded::what() const noexcept {
 void Texture::load(const char *name) {
     std::string filename = std::string("textures/") + name;
     sf::Image image;
-    if (!image.loadFromFile("textures/atlas.png"))
-        throw FileNotFoundError(std::move(filename));
+    if (!image.loadFromFile(filename))
+        throw LoadingError();
 
     auto buffer = const_cast<std::uint8_t *>(image.getPixelsPtr());
     // Texture alpha premultiplication (prevents graphical glitches when blending)

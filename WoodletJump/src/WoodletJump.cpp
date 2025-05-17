@@ -8,8 +8,8 @@
 WoodletJump::WoodletJump() : player_(), world_() {
     try {
         texture_.load("atlas.png");
-    } catch (Texture::FileNotFoundError &e) {
-        Logger::log(Logger::MessageType::kError, std::string(e.what()) + ": " + e.getFilename());
+    } catch (Texture::LoadingError &e) {
+        Logger::log(Logger::MessageType::kError, e.what());
         throw WoodletJump::InitError();
     }
     try {

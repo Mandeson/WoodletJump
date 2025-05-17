@@ -6,13 +6,9 @@
 
 class Texture {
 public:
-class FileNotFoundError : public std::exception {
+class LoadingError : public std::exception {
     public:
-        FileNotFoundError(std::string &&filename);
         const char* what() const noexcept override;
-        const std::string &getFilename();
-    private:
-        std::string filename_;
     };
 
     class NotLoaded : public std::exception {
