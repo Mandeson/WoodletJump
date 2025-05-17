@@ -3,6 +3,7 @@
 #include <SFML/OpenGL.hpp>
 #include <WoodletJump.h>
 #include <Logger.h>
+#include <chrono>
 
 constexpr sf::Vector2u kInitialWindowSize = {800, 600};
 
@@ -16,6 +17,8 @@ void Application::run() {
         game_->windowSize({static_cast<int>(kInitialWindowSize.x),
             static_cast<int>(kInitialWindowSize.y)});
 
+        std::optional<std::chrono::_V2::system_clock::time_point> time;
+
         while (window_.isOpen())
         {
             while (const std::optional event = window_.pollEvent())
@@ -27,6 +30,16 @@ void Application::run() {
                     glViewport(0, 0, x, y);
                     game_->windowSize({static_cast<int>(x), static_cast<int>(y)});
                 }
+            }
+
+            if (!time.has_value()) {
+                time = std::chrono::high_resolution_clock::now();
+            } else {
+                auto now_time = std::chrono::high_resolution_clock::now();
+                auto duration = now_time - time.value();
+                double d_time = std::chrono::duration<double>(duration).count();
+                game_->timeStep(d_time);
+                time = now_time;
             }
 
             game_->render();

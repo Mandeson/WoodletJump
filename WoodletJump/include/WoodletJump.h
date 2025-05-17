@@ -2,10 +2,10 @@
 
 #include <exception>
 #include <Shader.h>
+#include <Texture.h>
 #include <glm/glm.hpp>
 #include <Util/Vector.h>
 #include <Util/BufferBuilder.h>
-#include <SFML/Graphics/Texture.hpp>
 #include <Renderer/SpriteRenderer.h>
 #include <Renderer/SceneRenderer.h>
 #include <World/World.h>
@@ -26,9 +26,10 @@ public:
     // Called after constructor and every time the window size changes
     void windowSize(Vector2i size);
     void render();
+    void timeStep(double d_time);
 private:
     Vector2i window_size_;
-    sf::Texture texture_;
+    Texture texture_;
     Renderer::SpriteRenderer sprite_renderer_;
     Renderer::SceneRenderer scene_renderer_;
     Player player_;
