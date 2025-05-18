@@ -11,6 +11,7 @@ set(CMAKE_SKIP_BUILD_RPATH TRUE)
 
 add_definitions(-DGL_GLEXT_PROTOTYPES)
 add_executable(WoodletJump ${SOURCES})
+target_compile_options(WoodletJump PRIVATE -Wall)
 target_include_directories(WoodletJump PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/"
         "${PROJECT_SOURCE_DIR}/Library/include")
 set_target_properties(WoodletJump PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
