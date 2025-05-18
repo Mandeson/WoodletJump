@@ -50,7 +50,7 @@ void WoodletJump::render()
 
     auto &scene_buffer_builder = scene_renderer_.getBufferBuilder();
     scene_buffer_builder.clear();
-    world_.buildMesh(scene_buffer_builder, window_size_);
+    world_.buildMesh(scene_buffer_builder, window_size_, camera_);
     scene_renderer_.render();
 
     player_.render(sprite_renderer_, window_size_);
