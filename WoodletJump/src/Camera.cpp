@@ -8,7 +8,7 @@ void Camera::setPosition(float position) {
     posisiton_ = position;
 }
 
-float Camera::getPosition() const {
+double Camera::getPosition() const {
     return posisiton_;
 }
 

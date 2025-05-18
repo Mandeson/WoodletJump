@@ -6,9 +6,9 @@ class Camera {
 public:
     void windowSize(Vector2i window_size);
     void setPosition(float position);
-    float getPosition() const;
+    double getPosition() const;
     float getWidth() const;
 private:
-    float posisiton_{};
+    double posisiton_{};
     float width_{};
 };
