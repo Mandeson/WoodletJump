@@ -18,7 +18,7 @@ void Texture::load(const char *name) {
 
     auto buffer = const_cast<std::uint8_t *>(image.getPixelsPtr());
     // Texture alpha premultiplication (prevents graphical glitches when blending)
-    for (int i = 0; i < image.getSize().x * image.getSize().y * 4 - 1; i += 4) {
+    for (uint32_t i = 0; i < image.getSize().x * image.getSize().y * 4 - 1; i += 4) {
         float a = (float)buffer[i + 3] / 255;
         buffer[i] = (uint8_t)(buffer[i] * a);
         buffer[i + 1] = (uint8_t)(buffer[i + 1] * a);
