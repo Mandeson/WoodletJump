@@ -8,6 +8,7 @@ struct Vector2f {
 struct Vector2d {
     double x;
     double y;
+    Vector2d normalize();
 };
 
 struct Vector2i {
