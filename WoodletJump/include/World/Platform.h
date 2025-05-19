@@ -23,9 +23,9 @@ public:
     };
     static constexpr float kPlatformMaxWidth = 2 * kPlatformEdgeSize.x + 5 * kPlatformMidSize;
 private:
-    static constexpr TextureRect kPlatformLeftTextureRect = TextureRect(Constants::kTextureSize, {0, 81}, {127, 127});
-    static constexpr TextureRect kPlatformMidTextureRect = TextureRect(Constants::kTextureSize, {127, 81}, {128, 130});
-    static constexpr TextureRect kPlatformRightTextureRect = TextureRect(Constants::kTextureSize, {255, 81}, {127, 127});
+    static constexpr TextureRect kPlatformLeftTextureRect = TextureRect(Constants::kTextureSize, {0, 87}, {127, 127});
+    static constexpr TextureRect kPlatformMidTextureRect = TextureRect(Constants::kTextureSize, {127, 87}, {128, 130});
+    static constexpr TextureRect kPlatformRightTextureRect = TextureRect(Constants::kTextureSize, {255, 87}, {127, 127});
     static constexpr float kPixelSize = kPlatformMidSize / kPlatformMidPixelSize;
     static constexpr Vector2f kPlatformMidRenderSize = {kPlatformMidSize,
             static_cast<float>(kPlatformMidPixelSize + 2) / kPlatformMidPixelSize * kPlatformMidSize};
