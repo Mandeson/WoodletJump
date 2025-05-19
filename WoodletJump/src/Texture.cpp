@@ -16,13 +16,16 @@ void Texture::load(const char *name) {
     if (!image.loadFromFile(filename))
         throw LoadingError();
 
-    auto buffer = const_cast<std::uint8_t *>(image.getPixelsPtr());
     // Texture alpha premultiplication (prevents graphical glitches when blending)
-    for (uint32_t i = 0; i < image.getSize().x * image.getSize().y * 4 - 1; i += 4) {
-        float a = (float)buffer[i + 3] / 255;
-        buffer[i] = (uint8_t)(buffer[i] * a);
-        buffer[i + 1] = (uint8_t)(buffer[i + 1] * a);
-        buffer[i + 2] = (uint8_t)(buffer[i + 2] * a);
+    for (uint32_t y = 0; y < image.getSize().y; y++) {
+        for (uint32_t x = 0; x < image.getSize().x; x++) {
+            auto color = image.getPixel({x, y});
+            float alpha = static_cast<float>(color.a) / 255;
+            color.r = static_cast<uint8_t>(color.r * alpha);
+            color.g = static_cast<uint8_t>(color.g * alpha);
+            color.b = static_cast<uint8_t>(color.b * alpha);
+            image.setPixel({x, y}, color);
+        }
     }
 
     glGenTextures(1, &id_);
@@ -39,7 +42,7 @@ void Texture::load(const char *name) {
 #endif
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA,
-            GL_UNSIGNED_BYTE, buffer);
+            GL_UNSIGNED_BYTE, reinterpret_cast<const void *>(image.getPixelsPtr()));
         
 #ifdef USE_GLES2
     glGenerateMipmap(GL_TEXTURE_2D); // requires OpenGL 3.0 or GLES 2.0
