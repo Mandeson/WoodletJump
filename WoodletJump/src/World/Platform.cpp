@@ -3,6 +3,7 @@
 namespace World {
 
 Platform::Platform(Vector2f position) : position_(position), segments_{} {
+    segments_.reserve(2 + 1);
     width_ = kPlatformEdgeSize.x + kPlatformMidSize + kPlatformEdgeSize.x;
     position.x -= kPlatformEdgeSize.x;
     segments_.emplace_back(Box{{position.x, position.y - kPixelSize}, {kPlatformEdgeRenderSize.x, kPlatformEdgeRenderSize.y}}, kPlatformRightTextureRect);

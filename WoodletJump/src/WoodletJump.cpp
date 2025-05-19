@@ -59,5 +59,5 @@ void WoodletJump::render()
 }
 
 void WoodletJump::timeStep(double d_time) {
-    player_.timeStep(d_time);
+    player_.timeStep(d_time, world_, camera_);
 }

@@ -20,8 +20,8 @@ bool World::checkCollision(const Camera &camera, Box object) const {
         Vector2f position = platform.getPosition();
         Vector2f size = {platform.getWidth(), Platform::kPlatformMidSize};
         position.x -= size.x;
-        if ((object.position.x + object.size.x > position.x && object.position.x < position.x + size.x)
-                && (object.position.y + object.size.y > position.y && object.position.y < position.y + size.y)) {
+        if (object.position.x + object.size.x > position.x && object.position.x < position.x + size.x
+                && object.position.y + object.size.y > position.y && object.position.y < position.y + size.y) {
             colision = true;
             return false; // do not continue the loop
         } else {
@@ -31,7 +31,25 @@ bool World::checkCollision(const Camera &camera, Box object) const {
     return colision;
 }
 
-void World::forEachVisiblePlatform(const Camera &camera, std::function<bool(const Platform &)> lambda) const {
+bool World::checkCollisionBelow(const Camera &camera, Box object) const {
+    bool colision = false;
+    forEachVisiblePlatform(camera, [&object, &colision](const Platform &platform) {
+        Vector2f position = platform.getPosition();
+        Vector2f size = {platform.getWidth(), Platform::kPlatformMidSize};
+        position.x -= size.x;
+        if (object.position.x + object.size.x > position.x && object.position.x < position.x + size.x
+                && object.position.y < position.y && object.position.y + object.size.y > position.y && object.position.y + object.size.y <= position.y + size.y) {
+            colision = true;
+            return false; // do not continue the loop
+        } else {
+            return true; // continue the loop
+        }
+    });
+    return colision;
+}
+
+void World::forEachVisiblePlatform(const Camera &camera, std::function<bool(const Platform &)> lambda) const
+{
     float camera_pos = static_cast<float>(camera.getPosition());
     float camera_bound = camera_pos + camera.getWidth();
     for (auto element = platforms_.lower_bound(camera_pos); element != platforms_.end(); element++) {
