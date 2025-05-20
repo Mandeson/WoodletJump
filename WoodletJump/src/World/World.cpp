@@ -5,11 +5,18 @@ namespace World {
 World::World() {
     float position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
     platforms_.emplace(position, Vector2f{position, 0.6f});
+    platforms_.emplace(position + 0.1f, Vector2f{position + 0.1f, 0.8f});
+    platforms_.emplace(position + 0.3f, Vector2f{position + 0.3f, 0.6f});
+    platforms_.emplace(position + 0.5f, Vector2f{position + 0.5f, 0.4f});
+    platforms_.emplace(position + 0.7f, Vector2f{position + 0.7f, 0.8f});
+    platforms_.emplace(position + 0.9f, Vector2f{position + 0.9f, 0.6f});
+    platforms_.emplace(position + 1.1f, Vector2f{position + 1.1f, 0.8f});
+    platforms_.emplace(position + 1.3f, Vector2f{position + 1.3f, 0.6f});
 }
 
 void World::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const {
-    forEachVisiblePlatform(camera, [&buffer_builder, window_size](const Platform &platform) {
-        platform.buildMesh(buffer_builder, window_size);
+    forEachVisiblePlatform(camera, [&buffer_builder, window_size, &camera](const Platform &platform) {
+        platform.buildMesh(buffer_builder, window_size, camera);
         return true; // continue the loop
     });
 }

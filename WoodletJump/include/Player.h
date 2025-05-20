@@ -9,8 +9,8 @@ class Player {
 public:
     Player();
     void init();
-    void render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_size);
-    void timeStep(double d_time, const World::World &world, const Camera &camera);
+    void render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_size, const Camera &camera);
+    void timeStep(double d_time, const World::World &world, Camera &camera);
 private:
     static constexpr TextureRect kPlayerBodyTextureRect = TextureRect(Constants::kTextureSize, {0, 0}, {82, 82});
     static constexpr float kPlayerSize = 0.07f;

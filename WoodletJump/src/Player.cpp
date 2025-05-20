@@ -8,8 +8,8 @@ void Player::init() {
     body_.init(kPlayerBodyTextureRect);
 }
 
-void Player::render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_size) {
-    body_.setPosition({static_cast<float>(position_.x) * window_size.y, static_cast<float>(position_.y) * window_size.y});
+void Player::render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_size, const Camera &camera) {
+    body_.setPosition({static_cast<float>(position_.x - camera.getPosition()) * window_size.y, static_cast<float>(position_.y) * window_size.y});
     float pixel_size = kPlayerSize * window_size.y;
     body_.setSize({pixel_size, pixel_size});
     sprite_renderer.render(body_);
@@ -20,7 +20,7 @@ void Player::getColisionBox(Box &box) {
             {kPlayerSize - 2 * kPlayerMargin, kPlayerSize - kPlayerMargin}};
 }
 
-void Player::timeStep(double d_time, const World::World &world, const Camera &camera) {
+void Player::timeStep(double d_time, const World::World &world, Camera &camera) {
     bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
     bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
     bool jump = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
@@ -71,4 +71,6 @@ void Player::timeStep(double d_time, const World::World &world, const Camera &ca
             getColisionBox(colision_box);
         }
     }
+
+    camera.setPosition(position_.x - 0.2f);
 }

@@ -20,11 +20,12 @@ float Platform::getWidth() const {
     return width_;
 }
 
-void Platform::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size) const
+void Platform::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const
 {
     for (const auto &segment : segments_) {
         Box box = segment.getBox();
-        Vector2f pixel_position = {box.position.x * window_size.y, box.position.y * window_size.y};
+        float camera_position = static_cast<float>(camera.getPosition());
+        Vector2f pixel_position = {(box.position.x - camera_position) * window_size.y, box.position.y * window_size.y};
         Vector2f pixel_size = {box.size.x * window_size.y, box.size.y * window_size.y};
         buffer_builder.addRectangle(pixel_position, pixel_size, segment.getTextureRect());
     }

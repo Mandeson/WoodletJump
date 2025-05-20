@@ -4,6 +4,7 @@
 #include <Util/BufferBuilder.h>
 #include <Util/Segment.h>
 #include <Constants.h>
+#include <Camera.h>
 
 namespace World {
 
@@ -12,7 +13,7 @@ public:
     Platform(Vector2f position);
     Vector2f getPosition() const;
     float getWidth() const;
-    void buildMesh(BufferBuilder &buffer_builder, Vector2i window_size) const;
+    void buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
 
     static constexpr int kPlatformMidPixelSize = 128;
     static constexpr float kPlatformMidSize = 0.07f;
