@@ -1,7 +1,8 @@
 #include <Player.h>
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player() : position_{0.2f, 0.6f - kPlayerSize / 2} { }
+Player::Player() : position_{0.2f, 0.6f - kPlayerSize / 2}, velocity_({0.0, 0.0}), acceleration_({0.0, 10.0}),
+        is_jumping_(false) { }
 
 void Player::init() {
     body_.init(kPlayerBodyTextureRect);
@@ -22,21 +23,25 @@ void Player::getColisionBox(Box &box) {
 void Player::timeStep(double d_time, const World::World &world, const Camera &camera) {
     bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
     bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
-    //bool jump = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
+    bool jump = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
     bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
-    bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
 
-    double time = d_time / 10;
-    Vector2d move = {0.0, 0.0};
-    if (right && !left) {
-        move.x = time;
-    } else if (left && !right) {
-        move.x = -time;
+    if (!is_jumping_ && jump) {
+        is_jumping_ = true;
+        velocity_.y = kJumpVelocity;
     }
-    if (up && !down) {
-        move.y = -time;
-    } else if (down && !up) {
-        move.y = time;
+
+    velocity_.y += acceleration_.y * d_time;
+    double move_time = d_time * kAccelerationMultiplier;
+    Vector2d move = {velocity_.x * move_time, velocity_.y * move_time};
+    if (right && !left) {
+        move.x = d_time * kMoveMultiplier;
+    } else if (left && !right) {
+        move.x = -d_time * kMoveMultiplier;
+    }
+    if (up) {
+        move.y = -d_time * kMoveMultiplier;
+        velocity_.y = 0.0;
     }
 
     position_.x += move.x;
@@ -56,6 +61,10 @@ void Player::timeStep(double d_time, const World::World &world, const Camera &ca
         getColisionBox(colision_box);
         if (world.checkCollisionBelow(camera, colision_box)) {
             // Hit bottom, reset velocity etc.
+            velocity_.y = 0.0;
+            is_jumping_ = false;
+        } else if (world.checkCollisionAbove(camera, colision_box)) { // hit a ceiling
+            velocity_.y = 0.0;
         }
         while (world.checkCollision(camera, colision_box)) {
             position_.y -= move_less.y;
