@@ -4,7 +4,7 @@ void Camera::windowSize(Vector2i window_size) {
     width_ = static_cast<float>(window_size.x) / window_size.y;
 }
 
-void Camera::setPosition(float position) {
+void Camera::setPosition(double position) {
     posisiton_ = position;
 }
 
