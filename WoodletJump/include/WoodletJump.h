@@ -22,6 +22,8 @@ public:
         }
     };
 
+    static constexpr double kMaxTimeStep = 0.1;
+
     // Throws WoodletJump::InitError if not properly initialised
     WoodletJump();
     // Called after constructor and every time the window size changes

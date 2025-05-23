@@ -38,7 +38,13 @@ void Application::run() {
                 auto now_time = std::chrono::high_resolution_clock::now();
                 auto duration = now_time - time.value();
                 double d_time = std::chrono::duration<double>(duration).count();
-                game_->timeStep(d_time);
+                if (d_time < kMaxFrameDelay) {
+                    while (d_time > WoodletJump::kMaxTimeStep) {
+                        game_->timeStep(WoodletJump::kMaxTimeStep);
+                        d_time -= WoodletJump::kMaxTimeStep;
+                    }
+                    game_->timeStep(d_time);
+                }
                 time = now_time;
             }
 
