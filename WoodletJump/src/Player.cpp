@@ -2,7 +2,7 @@
 #include <SFML/Window/Keyboard.hpp>
 
 Player::Player() : position_{0.2f, 0.6f - kPlayerSize / 2}, velocity_({0.0, 0.0}), acceleration_({0.0, 10.0}),
-        is_jumping_(false) { }
+        is_jumping_(false), is_coliding_(true) { }
 
 void Player::init() {
     body_.init(kPlayerBodyTextureRect);
@@ -24,6 +24,7 @@ void Player::timeStep(double d_time, const World::World &world, Camera &camera) 
     bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right);
     bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
     bool jump = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Z);
+    bool collide = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::X);
     bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
 
     if (!is_jumping_ && jump) {
@@ -47,28 +48,39 @@ void Player::timeStep(double d_time, const World::World &world, Camera &camera) 
     position_.x += move.x;
     position_.y += move.y;
     Box colision_box;
-    getColisionBox(colision_box);
-    if (world.checkCollision(camera, colision_box)) {
-        position_.y -= move.y;
-        Vector2d normalized = move.normalize();
-        Vector2d move_less = {normalized.x * kCollisionThreshold, normalized.y * kCollisionThreshold};
-        while (world.checkCollision(camera, colision_box)) {
-            position_.x -= move_less.x;
-            getColisionBox(colision_box);
-        }
-
-        position_.y += move.y;
+    if (is_coliding_) {
         getColisionBox(colision_box);
-        if (world.checkCollisionBelow(camera, colision_box)) {
-            // Hit bottom, reset velocity etc.
-            velocity_.y = 0.0;
-            is_jumping_ = false;
-        } else if (world.checkCollisionAbove(camera, colision_box)) { // hit a ceiling
-            velocity_.y = 0.0;
-        }
-        while (world.checkCollision(camera, colision_box)) {
-            position_.y -= move_less.y;
+        if (world.checkCollision(camera, colision_box)) {
+            position_.y -= move.y;
+            Vector2d normalized = move.normalize();
+            Vector2d move_less = {normalized.x * kCollisionThreshold, normalized.y * kCollisionThreshold};
+            while (world.checkCollision(camera, colision_box)) {
+                position_.x -= move_less.x;
+                getColisionBox(colision_box);
+            }
+
+            position_.y += move.y;
             getColisionBox(colision_box);
+            if (world.checkCollisionBelow(camera, colision_box)) {
+                // Hit bottom, reset velocity etc.
+                if (collide)
+                    is_coliding_ = false;
+                velocity_.y = 0.0;
+                is_jumping_ = false;
+            } else if (world.checkCollisionAbove(camera, colision_box)) { // hit a ceiling
+                velocity_.y = 0.0;
+            }
+            while (world.checkCollision(camera, colision_box)) {
+                position_.y -= move_less.y;
+                getColisionBox(colision_box);
+            }
+        } else if (collide) {
+            is_coliding_ = false;
+        }
+    } else if (!collide) {
+        getColisionBox(colision_box);
+        if (!world.checkCollision(camera, colision_box)) {
+            is_coliding_ = true;
         }
     }
 

@@ -18,9 +18,9 @@ private:
     static constexpr float kPlayerHeadSize = (kPlayerSize - 2 * kPlayerMargin);
     static constexpr float kCollisionThreshold = 1.0f / 1440 / 32;
 
-    static constexpr float kAccelerationMultiplier = 0.3;
-    static constexpr float kMoveMultiplier = 0.3;
-    static constexpr float kJumpVelocity = -4.0;
+    static constexpr float kAccelerationMultiplier = 0.1;
+    static constexpr float kMoveMultiplier = 0.4;
+    static constexpr float kJumpVelocity = -8.0;
 
     void getColisionBox(Box &box);
 
@@ -29,4 +29,5 @@ private:
     Vector2d velocity_;
     Vector2d acceleration_;
     bool is_jumping_;
+    bool is_coliding_;
 };
