@@ -11,6 +11,7 @@
 #include <World/World.h>
 #include <Player.h>
 #include <Camera.h>
+#include <random>
 
 class WoodletJump {
 public:
@@ -28,6 +29,8 @@ public:
     void render();
     void timeStep(double d_time);
 private:
+    std::random_device random_device_;
+    std::mt19937 random_;
     Vector2i window_size_;
     Texture texture_;
     Renderer::SpriteRenderer sprite_renderer_;

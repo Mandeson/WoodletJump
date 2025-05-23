@@ -2,13 +2,15 @@
 
 namespace World {
 
-Platform::Platform(Vector2f position) : position_(position), segments_{} {
+Platform::Platform(Vector2f position, int segment_count) : position_(position), segments_{} {
     segments_.reserve(2 + 1);
-    width_ = kPlatformEdgeSize.x + kPlatformMidSize + kPlatformEdgeSize.x;
+    width_ = kPlatformEdgeSize.x + kPlatformMidSize * segment_count + kPlatformEdgeSize.x;
     position.x -= kPlatformEdgeSize.x;
     segments_.emplace_back(Box{{position.x, position.y - kPixelSize}, {kPlatformEdgeRenderSize.x, kPlatformEdgeRenderSize.y}}, kPlatformRightTextureRect);
-    position.x -= kPlatformMidSize;
-    segments_.emplace_back(Box{{position.x, position.y - kPixelSize}, {kPlatformMidRenderSize.x, kPlatformMidRenderSize.y}}, kPlatformMidTextureRect);
+    for (int i = 0; i < segment_count; i++) {
+        position.x -= kPlatformMidSize;
+        segments_.emplace_back(Box{{position.x, position.y - kPixelSize}, {kPlatformMidRenderSize.x, kPlatformMidRenderSize.y}}, kPlatformMidTextureRect);
+    }
     segments_.emplace_back(Box{{position.x - kPlatformEdgeRenderSize.x, position.y - kPixelSize}, {kPlatformEdgeRenderSize.x, kPlatformEdgeRenderSize.y}}, kPlatformLeftTextureRect);
 }
 

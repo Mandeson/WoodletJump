@@ -5,7 +5,7 @@
 #include <WoodletJump.h>
 #include <Logger.h>
 
-WoodletJump::WoodletJump() : player_(), world_() {
+WoodletJump::WoodletJump() : random_device_{}, random_(random_device_()), player_(), world_() {
     try {
         texture_.load("atlas.png");
     } catch (Texture::LoadingError &e) {
@@ -50,6 +50,7 @@ void WoodletJump::render()
 
     auto &scene_buffer_builder = scene_renderer_.getBufferBuilder();
     scene_buffer_builder.clear();
+    world_.generate(random_, camera_);
     world_.buildMesh(scene_buffer_builder, window_size_, camera_);
     scene_renderer_.render();
 

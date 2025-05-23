@@ -10,7 +10,7 @@ namespace World {
 
 class Platform {
 public:
-    Platform(Vector2f position);
+    Platform(Vector2f position, int segment_count);
     Vector2f getPosition() const;
     float getWidth() const;
     void buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;

@@ -1,17 +1,39 @@
 #include <World/World.h>
+#include <Logger.h>
 
 namespace World {
 
 World::World() {
     float position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
-    platforms_.emplace(position, Vector2f{position, 0.6f});
-    platforms_.emplace(position + 0.1f, Vector2f{position + 0.1f, 0.8f});
-    platforms_.emplace(position + 0.3f, Vector2f{position + 0.3f, 0.6f});
-    platforms_.emplace(position + 0.5f, Vector2f{position + 0.5f, 0.4f});
-    platforms_.emplace(position + 0.7f, Vector2f{position + 0.7f, 0.8f});
-    platforms_.emplace(position + 0.9f, Vector2f{position + 0.9f, 0.6f});
-    platforms_.emplace(position + 1.1f, Vector2f{position + 1.1f, 0.8f});
-    platforms_.emplace(position + 1.3f, Vector2f{position + 1.3f, 0.6f});
+    platforms_.emplace(position, Platform{Vector2f{position, 0.6f}, 1});
+    generated_ = position + Platform::kPlatformMaxWidth;
+}
+
+void World::World::generate(std::mt19937 &random, const Camera &camera) {
+    float limit = static_cast<float>(camera.getPosition()) + camera.getWidth();
+    while (generated_ < limit + Platform::kPlatformMaxWidth) {
+        const auto &last_platform = std::prev(platforms_.end())->second;
+        float platform_pos_y_min = last_platform.getPosition().y - 0.2f;
+        float platform_pos_y_max = platform_pos_y_min + 0.2f * 2;
+        if (platform_pos_y_min < 0.1f) {
+            float diff = 0.1f - platform_pos_y_min;
+            platform_pos_y_min += diff;
+            platform_pos_y_max += diff;
+        } else if (platform_pos_y_max + Platform::kPlatformMidSize > 0.9f) {
+            float diff = platform_pos_y_max + Platform::kPlatformMidSize - 0.9f;
+            platform_pos_y_min -= diff;
+            platform_pos_y_max -= diff;
+        }
+        std::uniform_real_distribution<float> platform_pos_y{platform_pos_y_min, platform_pos_y_max};
+        std::uniform_real_distribution<float> distance{-0.3f, 0.2f};
+        std::uniform_int_distribution<int> segment_count_dist{0, 5};
+        int segment_count = segment_count_dist(random);
+
+        float position = distance(random) + generated_ + Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize * segment_count
+                 + Platform::kPlatformEdgeSize.x;
+        platforms_.emplace(position, Platform{Vector2f{position, platform_pos_y(random)}, segment_count});
+        generated_ = std::max(generated_, position);
+    }
 }
 
 void World::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const {
