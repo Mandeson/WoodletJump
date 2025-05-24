@@ -18,9 +18,9 @@ private:
     static constexpr float kPlayerHeadSize = (kPlayerSize - 2 * kPlayerMargin);
     static constexpr float kCollisionThreshold = 1.0f / 1440 / 32;
 
-    static constexpr float kAccelerationMultiplier = 0.1;
-    static constexpr float kMoveMultiplier = 0.4;
-    static constexpr float kJumpVelocity = -8.0;
+    static constexpr float kAccelerationMultiplier = 0.25f;
+    static constexpr float kMoveMultiplier = 0.6f;
+    static constexpr float kJumpVelocity = -4.5f;
 
     void getColisionBox(Box &box);
 

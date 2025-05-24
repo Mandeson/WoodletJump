@@ -6,27 +6,27 @@ namespace World {
 World::World() {
     float position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
     platforms_.emplace(position, Platform{Vector2f{position, 0.6f}, 1});
-    generated_ = position + Platform::kPlatformMaxWidth;
+    generated_ = position - kNextPlatformMinXDistance;
 }
 
 void World::World::generate(std::mt19937 &random, const Camera &camera) {
     float limit = static_cast<float>(camera.getPosition()) + camera.getWidth();
     while (generated_ < limit + Platform::kPlatformMaxWidth) {
         const auto &last_platform = std::prev(platforms_.end())->second;
-        float platform_pos_y_min = last_platform.getPosition().y - 0.2f;
-        float platform_pos_y_max = platform_pos_y_min + 0.2f * 2;
-        if (platform_pos_y_min < 0.1f) {
-            float diff = 0.1f - platform_pos_y_min;
+        float platform_pos_y_min = last_platform.getPosition().y - kNextPlatformMaxYDistance;
+        float platform_pos_y_max = platform_pos_y_min + kNextPlatformMaxYDistance * 2;
+        if (platform_pos_y_min < kPlatformBoundUp) {
+            float diff = kPlatformBoundUp - platform_pos_y_min;
             platform_pos_y_min += diff;
             platform_pos_y_max += diff;
-        } else if (platform_pos_y_max + Platform::kPlatformMidSize > 0.9f) {
-            float diff = platform_pos_y_max + Platform::kPlatformMidSize - 0.9f;
+        } else if (platform_pos_y_max + Platform::kPlatformMidSize > kPlatformBoundDown) {
+            float diff = platform_pos_y_max + Platform::kPlatformMidSize - kPlatformBoundDown;
             platform_pos_y_min -= diff;
             platform_pos_y_max -= diff;
         }
         std::uniform_real_distribution<float> platform_pos_y{platform_pos_y_min, platform_pos_y_max};
-        std::uniform_real_distribution<float> distance{-0.3f, 0.2f};
-        std::uniform_int_distribution<int> segment_count_dist{0, 5};
+        std::uniform_real_distribution<float> distance{kNextPlatformMinXDistance, kNextPlatformMaxXDistance};
+        std::uniform_int_distribution<int> segment_count_dist{0, Platform::kMaxPlatformCount};
         int segment_count = segment_count_dist(random);
 
         float position = distance(random) + generated_ + Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize * segment_count
