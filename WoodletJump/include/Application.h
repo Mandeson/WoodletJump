@@ -1,7 +1,6 @@
 #pragma once
 
-#include <memory>
-#include <SFML/Window.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 class Application {
 public:
@@ -9,5 +8,5 @@ public:
 private:
     static constexpr double kMaxFrameDelay = 2.0;
 
-    sf::Window window_;
+    sf::RenderWindow window_;
 };

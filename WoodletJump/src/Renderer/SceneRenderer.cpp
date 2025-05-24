@@ -26,6 +26,7 @@ void SceneRenderer::render() {
     shader_.use();
     glDrawElements(GL_TRIANGLES, buffer_builder_.getElementCount(), GL_UNSIGNED_INT, 0);
     Shader::reset();
+    BufferBuilder::reset(aPosLocation_, aTexCoordLocation_);
 }
 
 }

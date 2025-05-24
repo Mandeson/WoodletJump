@@ -5,7 +5,14 @@
 #include <WoodletJump.h>
 #include <Logger.h>
 
-WoodletJump::WoodletJump() : random_device_{}, random_(random_device_()), player_(), world_() {
+WoodletJump::WoodletJump(sf::RenderWindow &window) : random_device_{}, random_(random_device_()),
+        window_(window), player_(), world_() {
+    if (!font_.openFromFile("fonts/Roboto-Regular.ttf")) {
+        throw WoodletJump::InitError();
+    }
+    text_ = std::make_unique<sf::Text>(font_, "Hello World");
+    text_->setCharacterSize(24);
+    text_->setFillColor(sf::Color::Black);
     try {
         texture_.load("atlas.png");
     } catch (Texture::LoadingError &e) {
@@ -42,7 +49,8 @@ void WoodletJump::windowSize(Vector2i size) {
 
 void WoodletJump::render()
 {
-    glClear(GL_COLOR_BUFFER_BIT);
+    window_.clear(sf::Color{60, 180, 80});
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -53,8 +61,9 @@ void WoodletJump::render()
     world_.generate(random_, camera_);
     world_.buildMesh(scene_buffer_builder, window_size_, camera_);
     scene_renderer_.render();
-
     player_.render(sprite_renderer_, window_size_, camera_);
+
+    window_.draw(*text_);
     
     glDisable(GL_BLEND);
 }

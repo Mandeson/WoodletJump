@@ -79,6 +79,13 @@ void BufferBuilder::bind(GLuint aPosLocation, GLuint aTexCoordLocation) {
     glEnableVertexAttribArray(aTexCoordLocation);
 }
 
+void BufferBuilder::reset(GLuint aPosLocation, GLuint aTexCoordLocation) {  
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(aPosLocation);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(aTexCoordLocation);
+}
+
 int BufferBuilder::getElementCount() {
     return indices_.size();
 }

@@ -24,6 +24,7 @@ void SpriteRenderer::render(Sprite& sprite) {
     shader_.setUniformMat4(uTransformLocation_, projection_ * model);
     glDrawElements(GL_TRIANGLES, sprite.buffer_builder_.getElementCount(), GL_UNSIGNED_INT, 0);
     Shader::reset();
+    BufferBuilder::reset(aPosLocation_, aTexCoordLocation_);
 }
 
 }

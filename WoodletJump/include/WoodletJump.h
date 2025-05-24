@@ -1,6 +1,9 @@
 #pragma once
 
 #include <exception>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/Text.hpp>
 #include <Shader.h>
 #include <Texture.h>
 #include <glm/glm.hpp>
@@ -25,7 +28,7 @@ public:
     static constexpr double kMaxTimeStep = 0.1;
 
     // Throws WoodletJump::InitError if not properly initialised
-    WoodletJump();
+    WoodletJump(sf::RenderWindow &window);
     // Called after constructor and every time the window size changes
     void windowSize(Vector2i size);
     void render();
@@ -33,7 +36,10 @@ public:
 private:
     std::random_device random_device_;
     std::mt19937 random_;
+    sf::RenderWindow &window_;
     Vector2i window_size_;
+    sf::Font font_;
+    std::unique_ptr<sf::Text> text_;
     Texture texture_;
     Renderer::SpriteRenderer sprite_renderer_;
     Renderer::SceneRenderer scene_renderer_;

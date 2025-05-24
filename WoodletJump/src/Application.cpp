@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include <Application.h>
 #include <SFML/OpenGL.hpp>
 #include <WoodletJump.h>
@@ -12,7 +13,7 @@ void Application::run() {
     window_.setVerticalSyncEnabled(true);
 
     try {
-        std::unique_ptr<WoodletJump> game_ = std::make_unique<WoodletJump>();
+        std::unique_ptr<WoodletJump> game_ = std::make_unique<WoodletJump>(window_);
 
         game_->windowSize({static_cast<int>(kInitialWindowSize.x),
             static_cast<int>(kInitialWindowSize.y)});
@@ -27,6 +28,7 @@ void Application::run() {
                     return;
                 } else if (const auto* resized = event->getIf<sf::Event::Resized>()) {
                     auto [x, y] = resized->size;
+                    window_.setView(sf::View(sf::FloatRect({0.0f, 0.0f}, {static_cast<float>(x), static_cast<float>(y)})));
                     glViewport(0, 0, x, y);
                     game_->windowSize({static_cast<int>(x), static_cast<int>(y)});
                 }
