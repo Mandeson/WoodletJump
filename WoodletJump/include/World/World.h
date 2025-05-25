@@ -12,7 +12,7 @@ class World {
 public:
     World();
     void generate(std::mt19937 &random, const Camera &camera);
-    void buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
+    void buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
     bool checkCollision(const Camera &camera, Box object) const;
     // Checks if the given object collides with any platform that is below it
     bool checkCollisionBelow(const Camera &camera, Box object) const;

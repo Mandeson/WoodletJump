@@ -13,7 +13,7 @@ public:
     Platform(Vector2f position, int segment_count);
     Vector2f getPosition() const;
     float getWidth() const;
-    void buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
+    void buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
 
     static constexpr int kPlatformMidPixelSize = 128;
     static constexpr float kPlatformMidSize = 0.07f;

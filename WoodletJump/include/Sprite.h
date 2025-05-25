@@ -10,7 +10,7 @@ public:
     void setSize(Vector2f size);
     void setPosition(Vector2f position);
 private:
-    BufferBuilder buffer_builder_;
+    TextureBufferBuilder buffer_builder_;
     Vector2f position_{};
     Vector2f size_{};
     float rotation_{};

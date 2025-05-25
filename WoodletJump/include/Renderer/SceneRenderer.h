@@ -11,11 +11,11 @@ class SceneRenderer {
 public:
     void init();
     void windowSize(Vector2i size);
-    BufferBuilder& getBufferBuilder();
+    TextureBufferBuilder& getBufferBuilder();
     void render();
 private:
     Shader shader_;
-    BufferBuilder buffer_builder_;
+    TextureBufferBuilder buffer_builder_;
     GLuint aPosLocation_;
     GLuint aTexCoordLocation_;
     GLuint uWindowSizeLocation_;

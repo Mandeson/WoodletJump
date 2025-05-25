@@ -22,7 +22,7 @@ float Platform::getWidth() const {
     return width_;
 }
 
-void Platform::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const
+void Platform::buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const
 {
     for (const auto &segment : segments_) {
         Box box = segment.getBox();

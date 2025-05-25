@@ -36,7 +36,7 @@ void World::World::generate(std::mt19937 &random, const Camera &camera) {
     }
 }
 
-void World::buildMesh(BufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const {
+void World::buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const {
     forEachVisiblePlatform(camera, [&buffer_builder, window_size, &camera](const Platform &platform) {
         platform.buildMesh(buffer_builder, window_size, camera);
         return true; // continue the loop

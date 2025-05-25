@@ -16,7 +16,7 @@ void SceneRenderer::windowSize(Vector2i size) {
     Shader::reset();
 }
 
-BufferBuilder& SceneRenderer::getBufferBuilder() {
+TextureBufferBuilder& SceneRenderer::getBufferBuilder() {
     return buffer_builder_;
 }
 
@@ -26,7 +26,7 @@ void SceneRenderer::render() {
     shader_.use();
     glDrawElements(GL_TRIANGLES, buffer_builder_.getElementCount(), GL_UNSIGNED_INT, 0);
     Shader::reset();
-    BufferBuilder::reset(aPosLocation_, aTexCoordLocation_);
+    TextureBufferBuilder::reset(aPosLocation_, aTexCoordLocation_);
 }
 
 }
