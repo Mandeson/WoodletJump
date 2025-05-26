@@ -57,8 +57,8 @@ public:
     void use();
     GLuint getAttribLocation(const char* name);
     GLuint getUniformLocation(const char* name);
-    void setUniformMat4(GLuint uniform_location, glm::mat4 matrix);
-    void setUniform2f(GLuint uniform_location, Vector2f vec);;
+    static void setUniformMat4(GLuint uniform_location, glm::mat4 matrix);
+    static void setUniform2f(GLuint uniform_location, Vector2f vec);;
     // Bind the default OpenGL shader
     static void reset();
 private:

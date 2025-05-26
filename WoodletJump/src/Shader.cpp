@@ -134,13 +134,11 @@ GLuint Shader::getUniformLocation(const char *name) {
 }
 
 void Shader::setUniformMat4(GLuint uniform_location, glm::mat4 matrix) {
-    if (id_ == 0)
-        throw Shader::NotLoaded();
     glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
 void Shader::setUniform2f(GLuint uniform_location, Vector2f vec) {
-    glUniform2f(uniform_location, vec.x, vec.y);
+    glUniform2f(uniform_location, vec.x, vec.y);\
 }
 
 void Shader::reset() {

@@ -11,7 +11,7 @@ void SceneRenderer::init() {
 
 void SceneRenderer::windowSize(Vector2i size) {
     shader_.use();
-    shader_.setUniform2f(uWindowSizeLocation_, {static_cast<float>(size.x),
+    Shader::setUniform2f(uWindowSizeLocation_, {static_cast<float>(size.x),
             static_cast<float>(size.y)});
     Shader::reset();
 }
