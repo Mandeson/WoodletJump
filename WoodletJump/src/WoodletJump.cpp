@@ -5,14 +5,12 @@
 #include <WoodletJump.h>
 #include <Logger.h>
 
-WoodletJump::WoodletJump(sf::RenderWindow &window) : random_device_{}, random_(random_device_()),
-        window_(window), player_(), world_() {
+WoodletJump::WoodletJump(sf::RenderWindow &window, float ui_scale) : random_device_{}, random_(random_device_()),
+        window_(window), player_(), world_(), ui_pause_(*this, ui_scale) {
     if (!font_.openFromFile("fonts/Roboto-Regular.ttf")) {
         throw WoodletJump::InitError();
     }
-    text_ = std::make_unique<sf::Text>(font_, "Hello World");
-    text_->setCharacterSize(24);
-    text_->setFillColor(sf::Color::Black);
+    ui_pause_.init(font_);
     try {
         texture_.load("atlas.png");
     } catch (Texture::LoadingError &e) {
@@ -22,6 +20,7 @@ WoodletJump::WoodletJump(sf::RenderWindow &window) : random_device_{}, random_(r
     try {
         sprite_renderer_.init();
         scene_renderer_.init();
+        color_renderer_.init();
     } catch (Shader::FileNotFoundError &e) {
         Logger::log(Logger::MessageType::kError, std::string(e.what()) + ": " + e.getFilename());
         throw WoodletJump::InitError();
@@ -36,15 +35,15 @@ WoodletJump::WoodletJump(sf::RenderWindow &window) : random_device_{}, random_(r
     }
 
     player_.init();
-    
-    glClearColor(0.5f, 0.6f, 0.9f, 1.0f);
 }
 
 void WoodletJump::windowSize(Vector2i size) {
     window_size_ = size;
     sprite_renderer_.windowSize(size);
     scene_renderer_.windowSize(size);
+    color_renderer_.windowSize(size);
     camera_.windowSize(size);
+    ui_pause_.build(size);
 }
 
 void WoodletJump::render()
@@ -63,7 +62,10 @@ void WoodletJump::render()
     scene_renderer_.render();
     player_.render(sprite_renderer_, window_size_, camera_);
 
-    window_.draw(*text_);
+    ui_pause_.render(color_renderer_);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    ui_pause_.renderText(window_);
     
     glDisable(GL_BLEND);
 }

@@ -12,8 +12,11 @@ void Application::run() {
     window_.create(sf::VideoMode(kInitialWindowSize), "WoodletJump");
     window_.setVerticalSyncEnabled(true);
 
+    auto monitor_height = sf::VideoMode::getDesktopMode().size.y;
+    float ui_scale = monitor_height / 768.f;
+
     try {
-        std::unique_ptr<WoodletJump> game_ = std::make_unique<WoodletJump>(window_);
+        std::unique_ptr<WoodletJump> game_ = std::make_unique<WoodletJump>(window_, ui_scale);
 
         game_->windowSize({static_cast<int>(kInitialWindowSize.x),
             static_cast<int>(kInitialWindowSize.y)});
