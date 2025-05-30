@@ -33,8 +33,8 @@ void UI::build() {
     for (const auto &button : buttons_) {
         auto position = button.bounds_.position;
         auto size = button.bounds_.size;
-        buffer_builder_.addRectangle(position, size, button.kColor);
-        buffer_builder_.addRectangle({position.x + 2, position.y + 2}, {size.x - 2 * 2, size.y - 2 * 2}, button.kInteriorColor);
+        buffer_builder_.addRectangle(position, size, Button::kColor);
+        buffer_builder_.addRectangle({position.x + 2, position.y + 2}, {size.x - 2 * 2, size.y - 2 * 2}, Button::kInteriorColor);
     }
     buffer_builder_.upload(GL_DYNAMIC_DRAW);
 }
@@ -44,21 +44,31 @@ void UI::render(Renderer::ColorRenderer &color_renderer) {
 }
 
 void UI::renderText(sf::RenderWindow &window) {
-    if (!font_)
+    if (!initialised())
         throw UI::NotInitialised();
     for (auto &button : buttons_)
         window.draw(button.text_);
 }
 
-UI::Button *UI::addButton(const std::string &text) {
-    if (!font_)
+UI::ButtonID UI::addButton(const std::string &text) {
+    if (!initialised())
         throw UI::NotInitialised();
     buttons_.emplace_back(*font_, ui_scale_, text);
-    return &buttons_.back();
+    return static_cast<uint32_t>(buttons_.size() - 1);
+}
+
+UI::Button &UI::getButton(UI::ButtonID button_id) {
+    if (!initialised())
+        throw UI::NotInitialised();
+    return buttons_.at(button_id);
 }
 
 float UI::getUIScale() {
     return ui_scale_;
+}
+
+bool UI::initialised() {
+    return font_ != nullptr;
 }
 
 }

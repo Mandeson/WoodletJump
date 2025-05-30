@@ -13,10 +13,9 @@ public:
     void init(sf::Font &font);
     void build(Vector2i window_size);
 private:
-    static constexpr Vector2i kButtonDefaultSize = {150, 40};
-
     WoodletJump &game_;
-    Button *button_{};
+    ButtonID back_button_;
+    ButtonID settings_button_;
 };
 
 }

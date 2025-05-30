@@ -12,6 +12,7 @@ namespace UI {
 
 class UI {
 public:
+    using ButtonID = uint32_t;
     class Button {
     public:
         Button(sf::Font &font, float ui_scale, const std::string &text);
@@ -37,9 +38,12 @@ public:
 protected:
     void init(sf::Font &font);
     void build();
-    Button *addButton(const std::string &text);
+    ButtonID addButton(const std::string &text);
+    Button &getButton(ButtonID button_id);
     float getUIScale();
 private:
+    bool initialised();
+
     static constexpr int kDefaultFontSize = 15;
 
     float ui_scale_;
