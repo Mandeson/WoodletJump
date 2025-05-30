@@ -83,3 +83,8 @@ void WoodletJump::keyPressed(sf::Keyboard::Key key) {
         break;
     }
 }
+
+void WoodletJump::mouseClick(Vector2i position, sf::Mouse::Button button) {
+    if (active_ui_)
+        active_ui_->mouseClick(position, button);
+}

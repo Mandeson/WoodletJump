@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <functional>
 #include <cstdint>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -15,7 +16,7 @@ public:
     using ButtonID = uint32_t;
     class Button {
     public:
-        Button(sf::Font &font, uint32_t text_height, const std::string &text);
+        Button(sf::Font &font, uint32_t text_height, const std::string &text, std::function<void()> callback);
         void setBounds(BoxI bounds);
     private:
         static constexpr Color kColor = Color{64, 64, 64, 255};
@@ -26,6 +27,7 @@ public:
         sf::Text text_;
         Box bounds_;
         uint32_t text_height_;
+        std::function<void()> callback_;
     };
 
     class NotInitialised : public std::exception {
@@ -36,16 +38,17 @@ public:
     UI(float ui_scale);
     void render(Renderer::ColorRenderer &color_renderer);
     void renderText(sf::RenderWindow &window);
+    void mouseClick(Vector2i position, sf::Mouse::Button button);
 protected:
     void init(sf::Font &font);
     void build();
-    ButtonID addButton(const std::string &text);
+    ButtonID addButton(const std::string &text, std::function<void()> callback);
     Button &getButton(ButtonID button_id);
     float getUIScale();
 private:
     bool initialised();
 
-    static constexpr int kDefaultFontSize = 15;
+    static constexpr int kDefaultFontSize = 14;
 
     float ui_scale_;
     uint32_t text_height_;

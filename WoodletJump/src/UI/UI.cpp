@@ -6,8 +6,8 @@ const char* UI::NotInitialised::what() const noexcept {
     return "UI: using UI that is not initialised";
 }    
 
-UI::Button::Button(sf::Font &font, uint32_t text_height, const std::string &text) : text_(font, text) {
-    text_height_ = text_height;
+UI::Button::Button(sf::Font &font, uint32_t text_height, const std::string &text, std::function<void()> callback)
+        : text_(font, text), text_height_(text_height), callback_(callback) {
     text_.setCharacterSize(text_height);
     text_.setFillColor(sf::Color::White);
     float origin = text_.getGlobalBounds().size.x / 2.f + text_.getLocalBounds().position.x;
@@ -52,10 +52,24 @@ void UI::renderText(sf::RenderWindow &window) {
         window.draw(button.text_);
 }
 
-UI::ButtonID UI::addButton(const std::string &text) {
+void UI::mouseClick(Vector2i position, sf::Mouse::Button button) {
+    if (button == sf::Mouse::Button::Left) {
+        for (const auto &button : buttons_) {
+            auto b_position = button.bounds_.position;
+            auto b_size = button.bounds_.size;
+            if (position.x >= b_position.x && position.x < b_position.x + b_size.x && position.y >= b_position.y
+                    && position.y < b_position.y + b_size.y) {
+                if (button.callback_ != nullptr)
+                    button.callback_();
+            }
+        }
+    }
+}
+
+UI::ButtonID UI::addButton(const std::string &text, std::function<void()> callback) {
     if (!initialised())
         throw UI::NotInitialised();
-    buttons_.emplace_back(*font_, text_height_, text);
+    buttons_.emplace_back(*font_, text_height_, text, callback);
     return static_cast<uint32_t>(buttons_.size() - 1);
 }
 

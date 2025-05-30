@@ -36,6 +36,7 @@ public:
     void render();
     void timeStep(double d_time);
     void keyPressed(sf::Keyboard::Key key);
+    void mouseClick(Vector2i position, sf::Mouse::Button button);
 private:
     friend class UI::Pause;
 

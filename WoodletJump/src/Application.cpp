@@ -36,6 +36,8 @@ void Application::run() {
                     game_->windowSize({static_cast<int>(x), static_cast<int>(y)});
                 } else if (const auto* key_pressed = event->getIf<sf::Event::KeyPressed>()) {
                     game_->keyPressed(key_pressed->code);
+                } else if (const auto* mouse_button_pressed = event->getIf<sf::Event::MouseButtonReleased>()) {
+                    game_->mouseClick({mouse_button_pressed->position.x, mouse_button_pressed->position.y}, mouse_button_pressed->button);
                 }
             }
 

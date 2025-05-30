@@ -8,8 +8,10 @@ Pause::Pause(WoodletJump &game, float ui_scale) : UI(ui_scale), game_(game) { }
 
 void Pause::init(sf::Font &font) {
     UI::init(font);
-    back_button_ = addButton("Back");
-    settings_button_ = addButton("Settings");
+    back_button_ = addButton("Back", [&](){
+        game_.active_ui_ = nullptr;
+    });
+    settings_button_ = addButton("Settings", nullptr);
 }
 
 void Pause::build(Vector2i window_size) {
