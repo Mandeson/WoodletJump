@@ -1,4 +1,3 @@
-#include <cmath>
 #include <UI/UI.h>
 
 namespace UI {
@@ -7,11 +6,12 @@ const char* UI::NotInitialised::what() const noexcept {
     return "UI: using UI that is not initialised";
 }    
 
-UI::Button::Button(sf::Font &font, float ui_scale, const std::string &text) : text_(font, text) {
-    text_.setCharacterSize(static_cast<unsigned int>(kDefaultFontSize * ui_scale));
+UI::Button::Button(sf::Font &font, uint32_t text_height, const std::string &text) : text_(font, text) {
+    text_height_ = text_height;
+    text_.setCharacterSize(text_height);
     text_.setFillColor(sf::Color::White);
-    auto origin = text_.getGlobalBounds().size / 2.f + text_.getLocalBounds().position;
-    text_.setOrigin({roundf(origin.x), roundf(origin.y)});
+    float origin = text_.getGlobalBounds().size.x / 2.f + text_.getLocalBounds().position.x;
+    text_.setOrigin({std::round(origin), 0.0f});
 }
 
 void UI::Button::setBounds(BoxI bounds) {
@@ -19,10 +19,12 @@ void UI::Button::setBounds(BoxI bounds) {
     bounds_.position.y = static_cast<float>(bounds.position.y);
     bounds_.size.x = static_cast<float>(bounds.size.x);
     bounds_.size.y = static_cast<float>(bounds.size.y);
-    text_.setPosition({bounds_.position.x + bounds.size.x / 2, bounds_.position.y + bounds.size.y / 2});
+    text_.setPosition({bounds_.position.x + bounds.size.x / 2, bounds_.position.y + bounds.size.y / 2 - text_height_ / 3 * 2});
 }
 
-UI::UI(float ui_scale) : ui_scale_(ui_scale) { }
+UI::UI(float ui_scale) : ui_scale_(ui_scale) {
+    text_height_ = static_cast<uint32_t>(kDefaultFontSize * ui_scale);
+}
 
 void UI::init(sf::Font &font) {
     font_ = &font;
@@ -53,7 +55,7 @@ void UI::renderText(sf::RenderWindow &window) {
 UI::ButtonID UI::addButton(const std::string &text) {
     if (!initialised())
         throw UI::NotInitialised();
-    buttons_.emplace_back(*font_, ui_scale_, text);
+    buttons_.emplace_back(*font_, text_height_, text);
     return static_cast<uint32_t>(buttons_.size() - 1);
 }
 
