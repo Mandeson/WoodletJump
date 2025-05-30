@@ -1,5 +1,9 @@
 #include <Camera.h>
 
+void Camera::reset() {
+    posisiton_ = 0.0;
+}
+
 void Camera::windowSize(Vector2i window_size) {
     width_ = static_cast<float>(window_size.x) / window_size.y;
 }

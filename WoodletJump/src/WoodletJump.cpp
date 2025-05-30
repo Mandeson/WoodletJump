@@ -6,11 +6,12 @@
 #include <Logger.h>
 
 WoodletJump::WoodletJump(sf::RenderWindow &window, float ui_scale) : random_device_{}, random_(random_device_()),
-        window_(window), player_(), world_(), ui_pause_(*this, ui_scale) {
+        window_(window), player_(), world_(), ui_pause_(*this, ui_scale), ui_game_over_(*this, ui_scale) {
     if (!font_.openFromFile("fonts/Roboto-Regular.ttf")) {
         throw WoodletJump::InitError();
     }
     ui_pause_.init(font_);
+    ui_game_over_.init(font_);
     try {
         texture_.load("atlas.png");
     } catch (Texture::LoadingError &e) {
@@ -44,6 +45,7 @@ void WoodletJump::windowSize(Vector2i size) {
     color_renderer_.windowSize(size);
     camera_.windowSize(size);
     ui_pause_.build(size);
+    ui_game_over_.build(size);
 }
 
 void WoodletJump::render()
@@ -66,20 +68,33 @@ void WoodletJump::render()
         active_ui_->render(color_renderer_);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    if (active_ui_)
+    if (active_ui_) {
         active_ui_->renderText(window_);
+        if (active_ui_ == &ui_game_over_)
+            ui_game_over_.renderGameOver(window_);
+    }
     
     glDisable(GL_BLEND);
 }
 
 void WoodletJump::timeStep(double d_time) {
-    player_.timeStep(d_time, world_, camera_);
+    if (active_ui_ == nullptr) {
+        player_.timeStep(d_time, world_, camera_);
+        if (player_.gameOver()) {
+            active_ui_ = &ui_game_over_;
+        }
+    }
 }
 
 void WoodletJump::keyPressed(sf::Keyboard::Key key) {
     switch (key) {
     case sf::Keyboard::Key::Escape:
-        active_ui_ = &ui_pause_;
+        if (active_ui_ == &ui_pause_)
+            active_ui_ = nullptr;
+        else if (active_ui_ == nullptr)
+            active_ui_ = &ui_pause_;
+        break;
+    default:
         break;
     }
 }

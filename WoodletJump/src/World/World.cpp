@@ -4,6 +4,11 @@
 namespace World {
 
 World::World() {
+    reset();
+}
+
+void World::reset() {
+    platforms_.clear();
     float position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
     platforms_.emplace(position, Platform{Vector2f{position, 0.6f}, 1});
     generated_ = position - kNextPlatformMinXDistance;

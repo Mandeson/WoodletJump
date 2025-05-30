@@ -11,6 +11,7 @@ namespace World {
 class World {
 public:
     World();
+    void reset();
     void generate(std::mt19937 &random, const Camera &camera);
     void buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
     bool checkCollision(const Camera &camera, Box object) const;

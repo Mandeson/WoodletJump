@@ -1,11 +1,20 @@
 #include <Player.h>
 #include <SFML/Window/Keyboard.hpp>
 
-Player::Player() : position_{0.2f, 0.6f - kPlayerSize / 2}, velocity_({0.0, 0.0}), acceleration_({0.0, 10.0}),
-        is_jumping_(false), is_coliding_(true) { }
+Player::Player() {
+    reset();
+}
 
 void Player::init() {
     body_.init(kPlayerBodyTextureRect);
+}
+
+void Player::reset() {
+    position_ = {0.2f, 0.6f - kPlayerSize / 2};
+    velocity_ = {0.0, 0.0};
+    acceleration_ = {0.0, 10.0};
+    is_jumping_ = false;
+    is_coliding_ = true;
 }
 
 void Player::render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_size, const Camera &camera) {
@@ -85,4 +94,8 @@ void Player::timeStep(double d_time, const World::World &world, Camera &camera) 
     }
 
     camera.setPosition(position_.x - 0.2f);
+}
+
+bool Player::gameOver() {
+    return position_.y > 1.0f;
 }
