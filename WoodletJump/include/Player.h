@@ -24,6 +24,7 @@ private:
     static constexpr float kAccelerationMultiplier = 0.25f;
     static constexpr float kMoveMultiplier = 0.6f;
     static constexpr float kJumpVelocity = -4.5f;
+    static constexpr float kTiltAngularSpeed = 2.0f;
 
     void getColisionBox(Box &box);
 
@@ -31,6 +32,7 @@ private:
     Vector2d position_;
     Vector2d velocity_;
     Vector2d acceleration_;
+    float tilt_;
     bool is_jumping_;
     bool is_coliding_;
 };

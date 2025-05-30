@@ -13,6 +13,7 @@ void Player::reset() {
     position_ = {0.0f, 0.6f - kPlayerSize / 2 - kCollisionThreshold};
     velocity_ = {0.0, 0.0};
     acceleration_ = {0.0, 10.0};
+    tilt_ = 0.0f;
     is_jumping_ = false;
     is_coliding_ = true;
 }
@@ -21,6 +22,7 @@ void Player::render(Renderer::SpriteRenderer &sprite_renderer, Vector2i window_s
     body_.setPosition({static_cast<float>(position_.x - camera.getPosition()) * window_size.y, static_cast<float>(position_.y) * window_size.y});
     float pixel_size = kPlayerSize * window_size.y;
     body_.setSize({pixel_size, pixel_size});
+    body_.setRotation(tilt_);
     sprite_renderer.render(body_);
 }
 
@@ -46,8 +48,15 @@ void Player::timeStep(double d_time, const World::World &world, Camera &camera) 
     Vector2d move = {velocity_.x * move_time, velocity_.y * move_time};
     if (right && !left) {
         move.x = d_time * kMoveMultiplier;
+        tilt_ = std::min(tilt_ + static_cast<float>(d_time) * kTiltAngularSpeed, 1.0f);
     } else if (left && !right) {
         move.x = -d_time * kMoveMultiplier;
+        tilt_ = std::max(tilt_ - static_cast<float>(d_time) * kTiltAngularSpeed, -1.0f);
+    } else {
+        if (tilt_ > 0)
+            tilt_ = std::max(tilt_ - static_cast<float>(d_time) * kTiltAngularSpeed, 0.0f);
+        else
+            tilt_ = std::min(tilt_ + static_cast<float>(d_time) * kTiltAngularSpeed, 0.0f);
     }
     if (up) {
         move.y = -d_time * kMoveMultiplier;

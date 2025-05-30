@@ -9,6 +9,7 @@ public:
     void init(TextureRect texture_rect);
     void setSize(Vector2f size);
     void setPosition(Vector2f position);
+    void setRotation(float rotation);
 private:
     TextureBufferBuilder buffer_builder_;
     Vector2f position_{};

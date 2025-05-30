@@ -12,3 +12,7 @@ void Sprite::setSize(Vector2f size) {
 void Sprite::setPosition(Vector2f position) {
     position_ = position;
 }
+
+void Sprite::setRotation(float rotation) {
+    rotation_ = rotation;
+}
