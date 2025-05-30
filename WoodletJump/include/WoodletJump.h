@@ -57,4 +57,6 @@ private:
     UI::Pause ui_pause_;
     UI::GameOver ui_game_over_;
     UI::UI *active_ui_{};
+    int last_score_;
+    std::optional<sf::Text> score_text_;
 };

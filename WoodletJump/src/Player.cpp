@@ -10,7 +10,7 @@ void Player::init() {
 }
 
 void Player::reset() {
-    position_ = {0.1f, 0.6f - kPlayerSize / 2 - kCollisionThreshold};
+    position_ = {0.0f, 0.6f - kPlayerSize / 2 - kCollisionThreshold};
     velocity_ = {0.0, 0.0};
     acceleration_ = {0.0, 10.0};
     is_jumping_ = false;
@@ -98,4 +98,8 @@ void Player::timeStep(double d_time, const World::World &world, Camera &camera) 
 
 bool Player::gameOver() {
     return position_.y > 1.0f;
+}
+
+double Player::getWorldPosition() {
+    return position_.x;
 }

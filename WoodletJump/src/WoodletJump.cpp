@@ -6,12 +6,15 @@
 #include <Logger.h>
 
 WoodletJump::WoodletJump(sf::RenderWindow &window, float ui_scale) : random_device_{}, random_(random_device_()),
-        window_(window), player_(), world_(), ui_pause_(*this, ui_scale), ui_game_over_(*this, ui_scale) {
+        window_(window), player_(), world_(), ui_pause_(*this, ui_scale), ui_game_over_(*this, ui_scale), last_score_(-1) {
     if (!font_.openFromFile("fonts/Roboto-Regular.ttf")) {
         throw WoodletJump::InitError();
     }
     ui_pause_.init(font_);
     ui_game_over_.init(font_);
+    sf::Text &score_text = score_text_.emplace(font_); // constructor requires a complete font object
+    score_text.setCharacterSize(20 * ui_scale);
+    score_text.setPosition({10.0f * ui_scale, 5.0f * ui_scale});
     try {
         texture_.load("atlas.png");
     } catch (Texture::LoadingError &e) {
@@ -68,6 +71,14 @@ void WoodletJump::render()
         active_ui_->render(color_renderer_);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    int score = std::max(0, static_cast<int>(player_.getWorldPosition() * 10));
+    sf::Text &score_text = score_text_.value();
+    if (last_score_ != score) {
+        score_text.setString(std::to_string(score));
+        last_score_ = score;
+    }
+    window_.draw(score_text);
+    
     if (active_ui_) {
         active_ui_->renderText(window_);
         if (active_ui_ == &ui_game_over_)

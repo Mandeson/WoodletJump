@@ -9,7 +9,7 @@ World::World() {
 
 void World::reset() {
     platforms_.clear();
-    double position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
+    double position = -0.1 + Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
     platforms_.emplace(position, Platform{Vector2d{position, 0.6}, 1});
     generated_ = position - kNextPlatformMinXDistance;
 }
