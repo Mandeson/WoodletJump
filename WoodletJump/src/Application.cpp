@@ -34,6 +34,8 @@ void Application::run() {
                     window_.setView(sf::View(sf::FloatRect({0.0f, 0.0f}, {static_cast<float>(x), static_cast<float>(y)})));
                     glViewport(0, 0, x, y);
                     game_->windowSize({static_cast<int>(x), static_cast<int>(y)});
+                } else if (const auto* key_pressed = event->getIf<sf::Event::KeyPressed>()) {
+                    game_->keyPressed(key_pressed->code);
                 }
             }
 

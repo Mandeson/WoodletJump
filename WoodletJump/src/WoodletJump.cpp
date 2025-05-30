@@ -62,14 +62,24 @@ void WoodletJump::render()
     scene_renderer_.render();
     player_.render(sprite_renderer_, window_size_, camera_);
 
-    ui_pause_.render(color_renderer_);
+    if (active_ui_)
+        active_ui_->render(color_renderer_);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    ui_pause_.renderText(window_);
+    if (active_ui_)
+        active_ui_->renderText(window_);
     
     glDisable(GL_BLEND);
 }
 
 void WoodletJump::timeStep(double d_time) {
     player_.timeStep(d_time, world_, camera_);
+}
+
+void WoodletJump::keyPressed(sf::Keyboard::Key key) {
+    switch (key) {
+    case sf::Keyboard::Key::Escape:
+        active_ui_ = &ui_pause_;
+        break;
+    }
 }

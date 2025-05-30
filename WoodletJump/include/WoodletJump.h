@@ -35,6 +35,7 @@ public:
     void windowSize(Vector2i size);
     void render();
     void timeStep(double d_time);
+    void keyPressed(sf::Keyboard::Key key);
 private:
     friend class UI::Pause;
 
@@ -51,4 +52,5 @@ private:
     World::World world_;
     Camera camera_;
     UI::Pause ui_pause_;
+    UI::UI *active_ui_{};
 };
