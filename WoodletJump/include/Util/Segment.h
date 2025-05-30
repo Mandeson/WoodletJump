@@ -5,10 +5,10 @@
 
 class Segment {
 public:
-    Segment(Box box, const TextureRect &texture_rect);
-    const Box &getBox() const;
+    Segment(BoxDF box, const TextureRect &texture_rect);
+    const BoxDF &getBox() const;
     const TextureRect &getTextureRect() const;
 private:
-    const Box box_;
+    const BoxDF box_;
     const TextureRect &texture_rect_;
 };

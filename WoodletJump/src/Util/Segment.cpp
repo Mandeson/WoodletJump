@@ -1,8 +1,8 @@
 #include <Util/Segment.h>
 
-Segment::Segment(Box box, const TextureRect &texture_rect) : box_(box), texture_rect_(texture_rect) { }
+Segment::Segment(BoxDF box, const TextureRect &texture_rect) : box_(box), texture_rect_(texture_rect) { }
 
-const Box &Segment::getBox() const {
+const BoxDF &Segment::getBox() const {
     return box_;
 }
 

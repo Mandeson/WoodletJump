@@ -10,7 +10,7 @@ UI::Button::Button(sf::Font &font, uint32_t text_height, const std::string &text
         : text_(font, text), text_height_(text_height), callback_(callback) {
     text_.setCharacterSize(text_height);
     text_.setFillColor(sf::Color::White);
-    float origin = text_.getGlobalBounds().size.x / 2.f + text_.getLocalBounds().position.x;
+    float origin = text_.getGlobalBounds().size.x / 2 + text_.getLocalBounds().position.x;
     text_.setOrigin({std::round(origin), 0.0f});
 }
 

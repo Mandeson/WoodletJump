@@ -10,8 +10,8 @@ namespace World {
 
 class Platform {
 public:
-    Platform(Vector2f position, int segment_count);
-    Vector2f getPosition() const;
+    Platform(Vector2d position, int segment_count);
+    Vector2d getPosition() const;
     float getWidth() const;
     void buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size, const Camera &camera) const;
 
@@ -37,7 +37,7 @@ private:
     };
     
     float width_;
-    Vector2f position_;
+    Vector2d position_;
     std::vector<Segment> segments_;
 };
 

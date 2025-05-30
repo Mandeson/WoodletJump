@@ -9,8 +9,8 @@ World::World() {
 
 void World::reset() {
     platforms_.clear();
-    float position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
-    platforms_.emplace(position, Platform{Vector2f{position, 0.6f}, 1});
+    double position = Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize + Platform::kPlatformEdgeSize.x;
+    platforms_.emplace(position, Platform{Vector2d{position, 0.6}, 1});
     generated_ = position - kNextPlatformMinXDistance;
 }
 
@@ -34,9 +34,9 @@ void World::World::generate(std::mt19937 &random, const Camera &camera) {
         std::uniform_int_distribution<int> segment_count_dist{0, Platform::kMaxPlatformCount};
         int segment_count = segment_count_dist(random);
 
-        float position = distance(random) + generated_ + Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize * segment_count
+        double position = distance(random) + generated_ + Platform::kPlatformEdgeSize.x + Platform::kPlatformMidSize * segment_count
                  + Platform::kPlatformEdgeSize.x;
-        platforms_.emplace(position, Platform{Vector2f{position, platform_pos_y(random)}, segment_count});
+        platforms_.emplace(position, Platform{Vector2d{position, platform_pos_y(random)}, segment_count});
         generated_ = std::max(generated_, position);
     }
 }
@@ -51,7 +51,7 @@ void World::buildMesh(TextureBufferBuilder &buffer_builder, Vector2i window_size
 bool World::checkCollision(const Camera &camera, Box object) const {
     bool colision = false;
     forEachVisiblePlatform(camera, [&object, &colision](const Platform &platform) {
-        Vector2f position = platform.getPosition();
+        Vector2d position = platform.getPosition();
         Vector2f size = {platform.getWidth(), Platform::kPlatformMidSize};
         position.x -= size.x;
         if (object.position.x + object.size.x > position.x && object.position.x < position.x + size.x
@@ -68,7 +68,7 @@ bool World::checkCollision(const Camera &camera, Box object) const {
 bool World::checkCollisionBelow(const Camera &camera, Box object) const {
     bool colision = false;
     forEachVisiblePlatform(camera, [&object, &colision](const Platform &platform) {
-        Vector2f position = platform.getPosition();
+        Vector2d position = platform.getPosition();
         Vector2f size = {platform.getWidth(), Platform::kPlatformMidSize};
         position.x -= size.x;
         if (object.position.x + object.size.x > position.x && object.position.x < position.x + size.x
@@ -85,7 +85,7 @@ bool World::checkCollisionBelow(const Camera &camera, Box object) const {
 bool World::checkCollisionAbove(const Camera &camera, Box object) const {
     bool colision = false;
     forEachVisiblePlatform(camera, [&object, &colision](const Platform &platform) {
-        Vector2f position = platform.getPosition();
+        Vector2d position = platform.getPosition();
         Vector2f size = {platform.getWidth(), Platform::kPlatformMidSize};
         position.x -= size.x;
         if (object.position.x + object.size.x > position.x && object.position.x < position.x + size.x

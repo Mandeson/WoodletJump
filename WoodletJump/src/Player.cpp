@@ -10,7 +10,7 @@ void Player::init() {
 }
 
 void Player::reset() {
-    position_ = {0.2f, 0.6f - kPlayerSize / 2};
+    position_ = {0.1f, 0.6f - kPlayerSize / 2 - kCollisionThreshold};
     velocity_ = {0.0, 0.0};
     acceleration_ = {0.0, 10.0};
     is_jumping_ = false;

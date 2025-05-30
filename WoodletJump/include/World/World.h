@@ -29,8 +29,8 @@ private:
     // Executes lambda for every platform within the given camera view, as long as lambda returns true. If lambda returns false, forEachVisiblePlatform returns.
     void forEachVisiblePlatform(const Camera &camera, std::function<bool(const Platform &)> lambda) const;
 
-    std::map<float, Platform> platforms_;
-    float generated_;
+    std::map<double, Platform> platforms_;
+    double generated_;
 };
 
 }
