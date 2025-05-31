@@ -13,7 +13,7 @@ public:
     void init(sf::Font &font);
     void build(Vector2i window_size);
 private:
-    static constexpr Vector2i kControlsInfoViewDefaultSize = {200, 150};
+    static constexpr Vector2i kControlsInfoViewDefaultSize = {180, 125};
     static constexpr const char *kControlsInfoText = "Controls:\n\n"
             "Z - jump\n"
             "Left arrow - move left\n"

@@ -16,6 +16,7 @@ private:
     WoodletJump &game_;
     ButtonID back_button_;
     ButtonID settings_button_;
+    ButtonID credits_button_;
 };
 
 }

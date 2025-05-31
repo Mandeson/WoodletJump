@@ -18,6 +18,7 @@
 #include <Camera.h>
 #include <UI/Pause.h>
 #include <UI/Controls.h>
+#include <UI/Credits.h>
 #include <UI/GameOver.h>
 #include <Background.h>
 
@@ -43,6 +44,7 @@ public:
 private:
     friend class UI::Pause;
     friend class UI::Controls;
+    friend class UI::Credits;
     friend class UI::GameOver;
 
     std::random_device random_device_;
@@ -60,6 +62,7 @@ private:
     Camera camera_;
     UI::Pause ui_pause_;
     UI::Controls ui_controls_;
+    UI::Credits ui_credits_;
     UI::GameOver ui_game_over_;
     UI::UI *active_ui_{};
     int last_score_;
