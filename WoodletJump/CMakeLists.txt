@@ -13,6 +13,6 @@ add_definitions(-DGL_GLEXT_PROTOTYPES)
 add_executable(WoodletJump ${SOURCES})
 target_compile_options(WoodletJump PRIVATE -Wall)
 target_include_directories(WoodletJump PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/"
-        "${PROJECT_SOURCE_DIR}/Library/include")
+        "${PROJECT_SOURCE_DIR}/UtilLib/include")
 set_target_properties(WoodletJump PROPERTIES LINK_FLAGS "-Wl,-rpath,./")
-target_link_libraries(WoodletJump PRIVATE SFML::Graphics OpenGL::GL Library)
+target_link_libraries(WoodletJump PRIVATE SFML::Graphics OpenGL::GL util)
