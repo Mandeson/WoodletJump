@@ -26,10 +26,10 @@ void GameOver::build(Vector2i window_size) {
     float scale = getUIScale();
     int width = static_cast<int>(Constants::kButtonDefaultSize.x * scale);
     int height = static_cast<int>(Constants::kButtonDefaultSize.y * scale);
-    int pos_y = window_size.y / 2 - (kTextDefaultFontSize * 2 + height) / 2;
+    int pos_y = window_size.y / 2 - (kTextDefaultFontSize * scale * 2 + height) / 2;
     const int pos_x = window_size.x / 2  - width / 2;
     text_.value().setPosition({static_cast<float>(window_size.x / 2), static_cast<float>(pos_y)});   
-    pos_y += kTextDefaultFontSize * 2;
+    pos_y += kTextDefaultFontSize * scale * 2 ;
     getButton(retry_button_).setBounds({{pos_x, pos_y}, {width, height}});
     UI::build();
 }
