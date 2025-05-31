@@ -53,10 +53,12 @@ void WoodletJump::windowSize(Vector2i size) {
 
 void WoodletJump::render()
 {
-    window_.clear(sf::Color{60, 180, 80});
+    window_.clear(sf::Color::Black);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
+    background_.render(color_renderer_, window_size_);
 
     texture_.bind();
 

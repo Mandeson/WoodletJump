@@ -38,6 +38,7 @@ public:
 class ColorBufferBuilder : public BufferBuilderBase {
 public:
     void addRectangle(Vector2f pos, Vector2f size, Color color);
+    void addGradient(Vector2f pos, Vector2f size, Color color_a, Color color_b);
     /* Binds buffer objects and enables their attributes
        args: location of position and color attributes within a ahader */
     void bind(GLuint aPosLocation, GLuint aColorLocation);

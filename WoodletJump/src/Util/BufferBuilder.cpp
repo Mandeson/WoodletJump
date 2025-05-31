@@ -96,15 +96,33 @@ void TextureBufferBuilder::reset(GLuint aPosLocation, GLuint aTexCoordLocation) 
 
 void ColorBufferBuilder::addRectangle(Vector2f pos, Vector2f size, Color color) {
     uploaded_ = false;
-    float r = static_cast<float>(color.r) / 255;
-    float g = static_cast<float>(color.g) / 255;
-    float b = static_cast<float>(color.b) / 255;
-    float a = static_cast<float>(color.a) / 255;
+    ColorF color_f = color.normalize();
     std::array<float, (2 + 4) * 4> vertices = {
-        pos.x,          pos.y,          r, g, b, a,
-        pos.x + size.x, pos.y,          r, g, b, a,
-        pos.x + size.x, pos.y + size.y, r, g, b, a,
-        pos.x,          pos.y + size.y, r, g, b, a,
+        pos.x,          pos.y,          color_f.r, color_f.g, color_f.b, color_f.a,
+        pos.x + size.x, pos.y,          color_f.r, color_f.g, color_f.b, color_f.a,
+        pos.x + size.x, pos.y + size.y, color_f.r, color_f.g, color_f.b, color_f.a,
+        pos.x,          pos.y + size.y, color_f.r, color_f.g, color_f.b, color_f.a
+    };
+    std::array<unsigned int, 3 * 2> indices = {
+        indice_index_, indice_index_ + 1, indice_index_ + 2,
+        indice_index_ + 2, indice_index_ + 3, indice_index_
+    };
+    indice_index_ += 4;
+    for (float vertice : vertices)
+        vertices_.push_back(vertice);
+    for (unsigned int indice : indices)
+        indices_.push_back(indice);
+}
+
+void ColorBufferBuilder::addGradient(Vector2f pos, Vector2f size, Color color_a, Color color_b) {
+    uploaded_ = false;
+    ColorF color_a_f = color_a.normalize();
+    ColorF color_b_f = color_b.normalize();
+    std::array<float, (2 + 4) * 4> vertices = {
+        pos.x,          pos.y,          color_a_f.r, color_a_f.g, color_a_f.b, color_a_f.a,
+        pos.x + size.x, pos.y,          color_a_f.r, color_a_f.g, color_a_f.b, color_a_f.a,
+        pos.x + size.x, pos.y + size.y, color_b_f.r, color_b_f.g, color_b_f.b, color_b_f.a,
+        pos.x,          pos.y + size.y, color_b_f.r, color_b_f.g, color_b_f.b, color_b_f.a,
     };
     std::array<unsigned int, 3 * 2> indices = {
         indice_index_, indice_index_ + 1, indice_index_ + 2,

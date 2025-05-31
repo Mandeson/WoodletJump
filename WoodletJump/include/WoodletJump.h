@@ -18,6 +18,7 @@
 #include <Camera.h>
 #include <UI/Pause.h>
 #include <UI/GameOver.h>
+#include <Background.h>
 
 class WoodletJump {
 public:
@@ -51,6 +52,7 @@ private:
     Renderer::SpriteRenderer sprite_renderer_;
     Renderer::SceneRenderer scene_renderer_;
     Renderer::ColorRenderer color_renderer_;
+    Background background_;
     Player player_;
     World::World world_;
     Camera camera_;

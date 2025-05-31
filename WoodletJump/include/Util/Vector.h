@@ -14,4 +14,5 @@ struct Vector2d {
 struct Vector2i {
     int x;
     int y;
+    Vector2f toFloat();
 };
