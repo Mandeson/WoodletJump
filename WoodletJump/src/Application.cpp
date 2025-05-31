@@ -1,4 +1,3 @@
-#include <iostream>
 #include <memory>
 #include <Application.h>
 #include <SFML/OpenGL.hpp>
@@ -13,7 +12,7 @@ void Application::run() {
     window_.setVerticalSyncEnabled(true);
 
     auto monitor_height = sf::VideoMode::getDesktopMode().size.y;
-    float ui_scale = monitor_height / 768.f;
+    float ui_scale = monitor_height / 600.0f;
 
     try {
         std::unique_ptr<WoodletJump> game_ = std::make_unique<WoodletJump>(window_, ui_scale);
@@ -21,7 +20,7 @@ void Application::run() {
         game_->windowSize({static_cast<int>(kInitialWindowSize.x),
             static_cast<int>(kInitialWindowSize.y)});
 
-        std::optional<std::chrono::_V2::system_clock::time_point> time;
+        std::optional<std::chrono::high_resolution_clock::time_point> time;
 
         while (window_.isOpen())
         {

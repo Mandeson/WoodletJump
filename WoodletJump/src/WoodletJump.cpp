@@ -1,4 +1,3 @@
-#include <iostream>
 #include <SFML/OpenGL.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <glm/gtc/matrix_transform.hpp>
