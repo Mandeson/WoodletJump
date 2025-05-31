@@ -17,6 +17,7 @@
 #include <Player.h>
 #include <Camera.h>
 #include <UI/Pause.h>
+#include <UI/Controls.h>
 #include <UI/GameOver.h>
 #include <Background.h>
 
@@ -41,6 +42,7 @@ public:
     void mouseClick(Vector2i position, sf::Mouse::Button button);
 private:
     friend class UI::Pause;
+    friend class UI::Controls;
     friend class UI::GameOver;
 
     std::random_device random_device_;
@@ -57,6 +59,7 @@ private:
     World::World world_;
     Camera camera_;
     UI::Pause ui_pause_;
+    UI::Controls ui_controls_;
     UI::GameOver ui_game_over_;
     UI::UI *active_ui_{};
     int last_score_;

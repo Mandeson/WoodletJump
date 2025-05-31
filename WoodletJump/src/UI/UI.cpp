@@ -10,8 +10,8 @@ UI::Button::Button(sf::Font &font, uint32_t text_height, const std::string &text
         : text_(font, text), text_height_(text_height), callback_(callback) {
     text_.setCharacterSize(text_height);
     text_.setFillColor(sf::Color::White);
-    float origin = text_.getGlobalBounds().size.x / 2 + text_.getLocalBounds().position.x;
-    text_.setOrigin({std::round(origin), 0.0f});
+    auto origin = text_.getGlobalBounds().size / 2.0f + text_.getLocalBounds().position;
+    text_.setOrigin({std::round(origin.x), std::round(origin.y)});
 }
 
 void UI::Button::setBounds(BoxI bounds) {
@@ -19,7 +19,7 @@ void UI::Button::setBounds(BoxI bounds) {
     bounds_.position.y = static_cast<float>(bounds.position.y);
     bounds_.size.x = static_cast<float>(bounds.size.x);
     bounds_.size.y = static_cast<float>(bounds.size.y);
-    text_.setPosition({bounds_.position.x + bounds.size.x / 2, bounds_.position.y + bounds.size.y / 2 - text_height_ / 3 * 2});
+    text_.setPosition({bounds_.position.x + bounds.size.x / 2, bounds_.position.y + bounds.size.y / 2});
 }
 
 UI::UI(float ui_scale) : ui_scale_(ui_scale) {

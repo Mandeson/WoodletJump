@@ -11,7 +11,9 @@ void Pause::init(sf::Font &font) {
     back_button_ = addButton("Back", [&](){
         game_.active_ui_ = nullptr;
     });
-    settings_button_ = addButton("Settings", nullptr);
+    settings_button_ = addButton("Controls", [&](){
+        game_.active_ui_ = &game_.ui_controls_;
+    });
 }
 
 void Pause::build(Vector2i window_size) {

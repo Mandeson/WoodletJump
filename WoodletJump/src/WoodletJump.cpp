@@ -6,11 +6,12 @@
 #include <Logger.h>
 
 WoodletJump::WoodletJump(sf::RenderWindow &window, float ui_scale) : random_device_{}, random_(random_device_()),
-        window_(window), player_(), world_(), ui_pause_(*this, ui_scale), ui_game_over_(*this, ui_scale), last_score_(-1) {
+        window_(window), player_(), world_(), ui_pause_(*this, ui_scale), ui_controls_(*this, ui_scale), ui_game_over_(*this, ui_scale), last_score_(-1) {
     if (!font_.openFromFile("fonts/Roboto-Regular.ttf")) {
         throw WoodletJump::InitError();
     }
     ui_pause_.init(font_);
+    ui_controls_.init(font_);
     ui_game_over_.init(font_);
     sf::Text &score_text = score_text_.emplace(font_); // constructor requires a complete font object
     score_text.setCharacterSize(20 * ui_scale);
@@ -48,6 +49,7 @@ void WoodletJump::windowSize(Vector2i size) {
     color_renderer_.windowSize(size);
     camera_.windowSize(size);
     ui_pause_.build(size);
+    ui_controls_.build(size);
     ui_game_over_.build(size);
 }
 
@@ -104,6 +106,8 @@ void WoodletJump::keyPressed(sf::Keyboard::Key key) {
     case sf::Keyboard::Key::Escape:
         if (active_ui_ == &ui_pause_)
             active_ui_ = nullptr;
+        else if (active_ui_ == &ui_controls_)
+            active_ui_ = &ui_pause_;
         else if (active_ui_ == nullptr)
             active_ui_ = &ui_pause_;
         break;
