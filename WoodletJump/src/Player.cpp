@@ -10,7 +10,7 @@ void Player::init() {
 }
 
 void Player::reset() {
-    position_ = {0.0f, 0.6f - kPlayerSize / 2 - kCollisionThreshold};
+    position_ = {0.0f, World::World::kFirstPlatformPosition.y - kPlayerSize / 2 - kCollisionThreshold};
     velocity_ = {0.0, 0.0};
     acceleration_ = {0.0, 10.0};
     tilt_ = 0.0f;

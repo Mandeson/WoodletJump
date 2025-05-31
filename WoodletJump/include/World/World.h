@@ -10,6 +10,8 @@ namespace World {
 
 class World {
 public:
+    static constexpr Vector2f kFirstPlatformPosition = {-0.1, 0.6};
+
     World();
     void reset();
     void generate(std::mt19937 &random, const Camera &camera);
@@ -20,9 +22,9 @@ public:
     // Checks if the given object collides with any platform that is above it
     bool checkCollisionAbove(const Camera &camera, Box object) const;
 private:
-    static constexpr float kNextPlatformMinXDistance = -0.15f;
+    static constexpr float kNextPlatformMinXDistance = -0.12f;
     static constexpr float kNextPlatformMaxXDistance = 0.25f;
-    static constexpr float kNextPlatformMaxYDistance = 0.15f;
+    static constexpr float kNextPlatformMaxYDistance = 0.12f;
     static constexpr float kPlatformBoundUp = 0.2f;
     static constexpr float kPlatformBoundDown = 1.0f - Platform::kPlatformMidSize;
 
